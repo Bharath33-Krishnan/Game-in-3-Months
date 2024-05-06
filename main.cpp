@@ -11,7 +11,7 @@
 *
 ********************************************************************************************/
 
-#include "src/Test/Test.h"
+#include "src/test/Test.h"
 #include "data_types.hpp"
 
 int main(void)

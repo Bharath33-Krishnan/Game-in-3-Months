@@ -15,16 +15,14 @@ include_directories(${CMAKE_SOURCE_DIR}/src/utilities)
 add_executable(${CMAKE_PROJECT_NAME}.out ${src})
 
 #Adding our subdir => light_lib is made
-add_subdirectory(${CMAKE_SOURCE_DIR}/src/Test)
-add_subdirectory(${CMAKE_SOURCE_DIR}/src/utilities)
+foreach(subdir IN ITEMS test utilities) #Append extra subdirs to the end of the list for src
+    add_subdirectory(${CMAKE_SOURCE_DIR}/src/${subdir})
+    target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE ${subdir}_lib)
+    add_dependencies(${CMAKE_PROJECT_NAME}.out ${subdir}_lib)
+endforeach()
 
 add_library(raylib STATIC IMPORTED)
 set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
-target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE raylib test_lib)
+target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE raylib)
 
-add_dependencies(${CMAKE_PROJECT_NAME}.out test_lib)
 
-# add_library(raylib PRIVATE )
-# target_link_libraries(${CMAKE_PROJECT_NAME}.out PUBLIC ${CMAKE_SOURCE_DIR}/lib/libraylib.a)
-# target_include_directories(${CMAKE_PROJECT_NAME}.out PUBLIC "${PROJECT_BINARY_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/src/lighting")
-# target_include_directories(main_executable PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/subdirectory_name")
