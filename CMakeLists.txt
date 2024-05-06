@@ -9,16 +9,19 @@ project(GIN3 VERSION 0.01)
 configure_file(version.h.in version.h)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/src/utilities)
 
 
 add_executable(${CMAKE_PROJECT_NAME}.out ${src})
 
 #Adding our subdir => light_lib is made
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/Test)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/utilities)
 
 add_library(raylib STATIC IMPORTED)
 set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
 target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE raylib test_lib)
+
 add_dependencies(${CMAKE_PROJECT_NAME}.out test_lib)
 
 # add_library(raylib PRIVATE )

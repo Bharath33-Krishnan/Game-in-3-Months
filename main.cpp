@@ -12,9 +12,13 @@
 ********************************************************************************************/
 
 #include "src/Test/Test.h"
+#include "data_types.hpp"
 
 int main(void)
 {
     Test test;
     test.run();
+
+    vec3 a(10);
+    a.print();
 }
