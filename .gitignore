@@ -21,7 +21,6 @@
 *.exe
 *.out
 *.app
-*.cpp
 
 #BuildDir
 build/
