@@ -9,14 +9,11 @@
 
 namespace Core{
 
-struct Engine_Texture2D{
-    i32 type;
-    Texture2D texture;
-};
-
+//Note : Bharath - This class handle batching based on shaders
 class EngineMaterial{
 protected:
     Shader shader;
+    i32 subscribedEntitiesNum = 0;
     std::vector<AbstractEntity*> subscribedEntities;
 
 
@@ -42,22 +39,18 @@ public:
         {
             LogInfoShader("Shader Unloaded");
             UnloadShader(shader);
+            loadedShader = false;
         }
-
     }
 
     inline void SubscribeToMaterial(AbstractEntity* entity){
         entity->setMaterial(this);
-        subscribedEntities.push_back(entity);
+        if(subscribedEntitiesNum >= MAX_ENTITIES_PER_MATERIAL){
+            TraceLog(LOG_INFO,"Line %d Function %s File %s:  max materials size reacged",__LINE__,__FUNCTION__,__FILE__); 
+            return;
+        }
+        subscribedEntities[subscribedEntitiesNum++] = entity;
     }
-
-    // inline void AddTexture(Texture2D tex,i32 location){
-    //     // material.maps[location].texture = tex;
-    //     Engine_Texture2D m_tex = {0};
-    //     m_tex.type = location;
-    //     m_tex.texture = tex;
-    //     textures.push_back(m_tex);
-    // };
 
     inline Shader getShader(){
         return shader;

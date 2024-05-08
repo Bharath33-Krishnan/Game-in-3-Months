@@ -22,10 +22,10 @@ void Core::LightingMaterial::updateMaterial(){
 
 
 void Core::LightingMaterial::DrawLightGizmos(){
-    for (int i = 0; i < lightsCount; i++)
+    for(int i = 0; i < lightsCount;i++)
     {
-        if (lights[i].enabled) DrawSphereEx(lights[i].position.to_vec(), 0.2f, 8, 8, lights[i].color);
-        else DrawSphereWires(lights[i].position.to_vec(), 0.2f, 8, 8, ColorAlpha(lights[i].color, 0.3f));
+        if (lights[i].enabled) DrawSphereEx(lights[i].position, 0.2f, 8, 8, lights[i].color);
+        else DrawSphereWires(lights[i].position, 0.2f, 8, 8, ColorAlpha(lights[i].color, 0.3f));
     }
 }
 
@@ -37,8 +37,8 @@ Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 ta
     {
         light.enabled = true;
         light.type = type;
-        light.position = position;
-        light.target = target;
+        light.position = position.to_vec();
+        light.target = target.to_vec();
         light.color = color;
 
         // NOTE: Lighting shader naming must be the provided ones
@@ -50,11 +50,9 @@ Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 ta
 
         UpdateLightValues(light);
         
-        TraceLog(LOG_INFO,TextFormat("Log %f %f %f"),light.position.x, light.position.y,light.position.z);
-        lightsCount++;
+        lights[lightsCount++] = light;
     }
 
-    lights.push_back(light);
     return light;
 }
 

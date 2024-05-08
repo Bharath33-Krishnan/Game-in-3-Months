@@ -39,6 +39,8 @@ struct Light {
 uniform Light lights[MAX_LIGHTS];
 uniform vec4 ambient;
 uniform vec3 viewPos;
+uniform float shininess;
+uniform float gamma;
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir, float height_scale)
 { 
@@ -51,6 +53,7 @@ vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir, float height_scale)
 void main() 
 {
 
+
     vec3 tanViewPos =  transTBN * viewPos;
     vec3 tanFragPos =  transTBN * fragPosition;
 
@@ -60,25 +63,21 @@ void main()
     // vec2 texCoords = ParallaxMapping(fragTexCoord,tanviewDir,.08);
 
     vec2 texCoords = fragTexCoord;
+    float shine = shininess * 16.0 * texture(specularMap,texCoords).r;
 
-    float gamma = 2.2;
-    float shine = .3 * 16.0 * texture(specularMap,texCoords).r;
     int blinn = 1;
     // Texel color fetching from texture sampler
     vec4 texelColor = vec4(pow(texture(texture0, texCoords).rgb, vec3(gamma)),1.0);
 
 
-    // finalColor = vec4(fragTangent,1.0);
-
     vec3 lightDot = vec3(0.0);
-    // vec3 normal = normalize(fragNormal);
+
     // obtain normal from normal map in range [0,1]
     vec3 normal = texture(texture2, texCoords).rgb;
     // transform normal vector to range [-1,1]
     normal = normalize(normal * 2.0 - 1.0); 
     normal = normalize(TBN * normal);
 
-    // vec3 height = texture(heightMap,fragTexCoord).rgb;
     // finalColor = vec4(normal,1.0);
     // return;
 

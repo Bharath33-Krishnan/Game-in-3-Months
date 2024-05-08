@@ -1,3 +1,4 @@
+#include "data_types.hpp"
 #include "raylib/raylib.h"
 #include "src/core.h"
 #include "src/core/entity.hpp"
@@ -177,8 +178,10 @@ int main(void)
 
     Core::SceneManager::addScene(scene);
 
-    // TraceLog(LOG_INFO,"********** Debug Text ************"); 
     Core::SceneManager::run();
 
+
+    UnloadTexture(albedoTex);
+    UnloadTexture(normalTex);
     CloseWindow();
 }

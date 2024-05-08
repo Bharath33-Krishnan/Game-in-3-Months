@@ -16,7 +16,12 @@ Core::GraphicsEngine::~GraphicsEngine(){
 
 
 void Core::GraphicsEngine::RegisterMaterial(Core::EngineMaterial* mat){
-    materials.push_back(mat);
+    if(registeredMaterialsNum >= MAX_MATERIALS_PER_SCENE){
+        TraceLog(LOG_INFO,"Line %d Function %s File %s:  max materials size reacged",__LINE__,__FUNCTION__,__FILE__); 
+        return;
+    }
+    SetShaderValue(mat->getShader(), GetShaderLocation(mat->getShader(), "gamma"), &gammaCorrection, SHADER_UNIFORM_FLOAT);
+    materials[registeredMaterialsNum++] = mat;
 }
 
 

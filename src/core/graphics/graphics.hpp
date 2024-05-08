@@ -11,9 +11,12 @@ namespace Core{
 
 #define MAX_MATERIALS_PER_SCENE 30
 
+//Note : Bharath - This class handle contains all shaders and issues draw calls 
 class GraphicsEngine{
 private:
     std::vector<EngineMaterial*> materials;
+    i32 registeredMaterialsNum = 0;
+    f32 gammaCorrection = 2.2;
 
 public:
     GraphicsEngine();

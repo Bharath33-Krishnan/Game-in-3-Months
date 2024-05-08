@@ -48,5 +48,5 @@ void Core::Scene::draw() {
     //     // NOTE : Gowrish - Checking for NULLs since array is pre initialized
     //     if (entity) entity->draw();
     // }
-    gfxEngine.DrawEntites(vec3(camera.position.x,camera.position.y,camera.position.z));
+    gfxEngine->DrawEntites(vec3(camera.position.x,camera.position.y,camera.position.z));
 }
