@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "entity.hpp"
+#include "graphics/graphics.hpp"
 
 #define MAX_ENTITIES_PER_SCENE 100
 
@@ -12,6 +13,8 @@ private:
     std::vector<Core::AbstractEntity*> entities;
     Camera camera;
     i32 entityCounter = 0;
+protected:
+    GraphicsEngine gfxEngine;
 public:
     Scene();
 

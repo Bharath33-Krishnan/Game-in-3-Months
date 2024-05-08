@@ -1,4 +1,4 @@
-file(GLOB src "*.cpp")
+file(GLOB src "*.cpp" "graphics/*.cpp")
 
 add_library(core_lib ${src})
 
