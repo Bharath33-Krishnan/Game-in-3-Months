@@ -26,7 +26,7 @@
 build/
 
 #Texture
-res/Textures/*.png
+res/Textures/
 
 # Cmake
 CMakeLists.txt.user
