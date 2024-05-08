@@ -21,12 +21,13 @@
 *.exe
 *.out
 *.app
+*.cpp
 
 #BuildDir
 build/
 
 #Texture
-res/
+res/Textures/
 
 # Cmake
 CMakeLists.txt.user
