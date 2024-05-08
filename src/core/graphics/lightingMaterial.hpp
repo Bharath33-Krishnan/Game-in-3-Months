@@ -15,8 +15,8 @@ namespace Core{
 typedef struct {   
     int type;
     bool enabled;
-    vec3 position;
-    vec3 target;
+    Vector3 position;
+    Vector3 target;
     Color color;
     float attenuation;
     
@@ -42,7 +42,7 @@ public:
     using EngineMaterial::EngineMaterial;
     void initMaterial(vec3 ambientColor,Camera& mainCam);
     void updateMaterial() override;
-    Light CreateLight(i32 type, vec3 position, vec3 target, Color color);
+    Light CreateLight(i32 type,vec3 position,vec3 target, Color color);
     void UpdateLightValues(Light light);
     void DrawLightGizmos();
 };

@@ -2,6 +2,7 @@
 // #include "src/test/Test.h"
 #include "src/core.h"
 #include "src/core/entity.hpp"
+#include "src/core/graphics/graphics.hpp"
 #include "src/core/graphics/lightingMaterial.hpp"
 
 class Player : public Core::AbstractEntity {
@@ -12,6 +13,8 @@ private:
     i32 animsCount;
     i32 currentFrame;
     i32 currentAnimation;
+    Texture2D albedoTex;
+    Texture2D normalTex;
 
 public:
     Player(Core::Scene* scene) {
@@ -36,8 +39,8 @@ public:
         // model = LoadModelFromMesh(cube_mesh);
         GenMeshTangents(model.meshes);
         anims = LoadModelAnimations("../res/boom.m3d", &this->animsCount);
-        Texture2D albedoTex = LoadTexture("../res/Textures/Rock_albedo.png");
-        Texture2D normalTex = LoadTexture("../res/Textures/Rock_normal.png");
+        albedoTex = LoadTexture("../res/Textures/Rock_albedo.png");
+        normalTex = LoadTexture("../res/Textures/Rock_normal.png");
 
         addTexture(albedoTex, MATERIAL_MAP_ALBEDO);
         addTexture(normalTex, MATERIAL_MAP_NORMAL);
@@ -64,24 +67,37 @@ public:
     ~Player() {
         UnloadModel(model);
         UnloadModelAnimations(anims, animsCount);
+        UnloadTexture(albedoTex);
+        UnloadTexture(normalTex);
     }
 };
 
 class MyScene : public Core::Scene {
 public:
-    MyScene(Camera& cam, Core::GraphicsEngine& gfxEngine) {
+    MyScene(Camera& cam, Core::GraphicsEngine* gfxEngine) {
         DisableCursor();
         SetTargetFPS(60);
 
 
         Core::LightingMaterial* mat1 = new Core::LightingMaterial("../res/shaders/lighting.vert.glsl","../res/shaders/lighting.frag.glsl"); 
         mat1->initMaterial(vec3(0.1,0.0,0.5),cam);
-        gfxEngine.RegisterMaterial(mat1);
+        f32 shine = .5;
+
+
+        int shininessLocation = GetShaderLocation(mat1->getShader(),"shininess");
+        SetShaderValue(mat1->getShader(), shininessLocation , &shine , SHADER_UNIFORM_FLOAT);
+
+
+        //IMPORTANT - Register material to gfx engine
+        gfxEngine->RegisterMaterial(mat1);
+
 
         Player* player = new Player(this);
+        //IMPORTANT - Register entity to material
         mat1->SubscribeToMaterial(player);
 
-        mat1->CreateLight(LIGHT_POINT, vec3(1.0,2.0,1.0),vec3(0.0),RED);
+        mat1->CreateLight(LIGHT_DIRECTIONAL, vec3(1.0f,2.0f,1.0f) ,vec3(0.0),WHITE);
+        // mat1->CreateLight(LIGHT_POINT, vec3(2.0f,2.0f,1.0f) ,vec3(0.0),YELLOW);
 
         this->gfxEngine = gfxEngine;
         cam.position = vec3(1.5f).to_vec();
@@ -103,14 +119,12 @@ int main(void)
 
     DisableCursor();
 
-
-    Core::GraphicsEngine gfxEngine;
+    Core::GraphicsEngine* gfxEngine = new Core::GraphicsEngine();
     
     MyScene* scene = new MyScene(cam,gfxEngine);
 
     Core::SceneManager::addScene(scene);
 
-    // TraceLog(LOG_INFO,"********** Debug Text ************"); 
     Core::SceneManager::run();
 
     CloseWindow();

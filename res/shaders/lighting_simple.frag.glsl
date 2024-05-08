@@ -33,12 +33,12 @@ struct Light {
 uniform Light lights[MAX_LIGHTS];
 uniform vec4 ambient;
 uniform vec3 viewPos;
+uniform float shininess;
+uniform float gamma;
 
 void main() 
 {
-
-    float gamma = 2.2;
-    float shine = 16.0;
+    float shine = shininess;
     int blinn = 1;
     // Texel color fetching from texture sampler
     vec4 texelColor = vec4(pow(texture(texture0, fragTexCoord).rgb, vec3(gamma)),1.0);
@@ -55,29 +55,6 @@ void main()
 
     vec3 viewD = normalize(viewPos - fragPosition);
     vec3 specular = vec3(0.0);
-
-    // NOTE: Implement here your fragment shader code
-
-
-        // if (lights[0].enabled == 1)
-        // {
-        //     vec3 light = vec3(0.0);
-
-        //     if (lights[0].type == LIGHT_DIRECTIONAL)
-        //     {
-        //         light = -normalize(lights[i].target - lights[i].position);
-        //     }
-
-        //     if (lights[0].type == LIGHT_POINT)
-        //     {
-        //         light = normalize(lights[i].position - fragPosition);
-        //     }
-
-        //     float NdotL = max(dot(normal, light), 0.0);
-        //     lightDot += lights[i].color.rgb*NdotL;
-
-        // }
-
 
     for (int i = 0; i < MAX_LIGHTS; i++)
     {
@@ -101,8 +78,8 @@ void main()
 
             float specCo = 0.0;
             if (NdotL > 0.0 && blinn == 0) specCo = pow(max(0.0, dot(viewD, reflect(-(light), normal))),shine); // 16 refers to shine
-            if (NdotL > 0.0 && blinn == 1) specCo = pow(max(0.0, dot(halfwayDir, normal)),shine); // 16 refers to shine
-            specular += specCo;
+            if (NdotL > 0.0 && blinn == 1) specCo = pow(max(0.0, dot(halfwayDir, normal)),16); // 16 refers to shine
+            specular += specCo * shine;
         }
     }
 

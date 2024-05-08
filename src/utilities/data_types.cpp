@@ -29,6 +29,7 @@ Vector2 vec2::to_vec() {
 vec3::vec3(f32 num1, f32 num2 ,f32 num3) {
     x = num1;
     y = num2;
+    z = num3;
 }
 
 vec3::vec3(f32 num) { 

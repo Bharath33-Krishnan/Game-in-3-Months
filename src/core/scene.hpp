@@ -14,7 +14,7 @@ private:
     Camera camera;
     i32 entityCounter = 0;
 protected:
-    GraphicsEngine gfxEngine;
+    GraphicsEngine* gfxEngine;
 public:
     Scene();
 
