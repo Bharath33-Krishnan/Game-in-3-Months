@@ -25,6 +25,9 @@
 #BuildDir
 build/
 
+#Texture
+res/Textures/
+
 # Cmake
 CMakeLists.txt.user
 CMakeCache.txt
