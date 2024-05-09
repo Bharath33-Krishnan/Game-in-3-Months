@@ -5,3 +5,6 @@
 #include "data_types.hpp"
 #include "core/input.hpp"
 #include "core/scene_manager.hpp"
+#include "core/entity.hpp"
+#include "core/graphics/graphics.hpp"
+#include "core/graphics/lightingMaterial.hpp"
