@@ -1,9 +1,6 @@
+#include "data_types.hpp"
 #include "raylib/raylib.h"
-// #include "src/test/Test.h"
 #include "src/core.h"
-#include "src/core/entity.hpp"
-#include "src/core/graphics/graphics.hpp"
-#include "src/core/graphics/lightingMaterial.hpp"
 
 class Player : public Core::AbstractEntity {
 private:
