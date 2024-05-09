@@ -30,7 +30,7 @@ public:
 
     void init() {
         model = LoadModel("../res/boom.m3d");
-        // Mesh cube_mesh= GenMeshCube(1.0, 1.0, 1.0);
+        // Mesh cube_mesh= GenMeshCube(10.0, 1.0, 10.0);
         // model = LoadModelFromMesh(cube_mesh);
         GenMeshTangents(model.meshes);
         anims = LoadModelAnimations("../res/boom.m3d", &this->animsCount);
@@ -105,7 +105,7 @@ int main(void)
 
 
     // mat1->CreateLight(LIGHT_DIRECTIONAL, vec3(1.0f,2.0f,1.0f) ,vec3(0.0),WHITE);
-    mat1->CreateLight(LIGHT_POINT, vec3(2.0f,2.0f,1.0f) ,vec3(0.0),RED);
+    mat1->CreateLight(LIGHT_POINT, vec3(0.0f,1.0f,.0f) ,vec3(0.0),vec3(.6,.2,.1),RED);
     mat1->addTexture(albedoTex, Core::texture_types::TEXTURE_MAP_ALBEDO);
     mat1->addTexture(normalTex, Core::texture_types::TEXTURE_MAP_NORMAL);
 

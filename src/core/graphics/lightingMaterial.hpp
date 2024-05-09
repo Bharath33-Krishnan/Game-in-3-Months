@@ -25,7 +25,7 @@ typedef struct {
     Vector3 position;
     Vector3 target;
     Color color;
-    float attenuation;
+    Vector3 attenuation;
     
     // Shader locations
     int enabledLoc;
@@ -54,7 +54,7 @@ public:
     void addTexture(Texture2D& tex,texture_types loc);
     void updateMaterial() override;
     void setMaterial(Model model) override;
-    Light CreateLight(i32 type,vec3 position,vec3 target, Color color);
+    Light CreateLight(i32 type,vec3 position,vec3 target,vec3 attenuation, Color color);
     void UpdateLightValues(Light light);
     void DrawLightGizmos();
 };
