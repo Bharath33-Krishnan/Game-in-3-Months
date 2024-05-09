@@ -49,7 +49,7 @@ public:
         UnloadImage(img);
 =======
         model = LoadModel("../res/boom.m3d");
-        // Mesh cube_mesh= GenMeshCube(1.0, 1.0, 1.0);
+        // Mesh cube_mesh= GenMeshCube(10.0, 1.0, 10.0);
         // model = LoadModelFromMesh(cube_mesh);
         GenMeshTangents(model.meshes);
         anims = LoadModelAnimations("../res/boom.m3d", &this->animsCount);

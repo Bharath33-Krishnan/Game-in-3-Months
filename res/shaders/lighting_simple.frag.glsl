@@ -26,6 +26,7 @@ struct Light {
     int type;
     vec3 position;
     vec3 target;
+    vec3 attenuation;
     vec4 color;
 };
 
@@ -60,28 +61,37 @@ void main()
     {
         if (lights[i].enabled == 1)
         {
+            float lightDistance = 0.0;
+            float attenuation = 1.0;
             vec3 light = vec3(0.0);
+            // vec3 tanLightPos = transTBN * lights[i].position;
 
             if (lights[i].type == LIGHT_DIRECTIONAL)
             {
                 light = -normalize(lights[i].target - lights[i].position);
+                attenuation = 1.0/length(lights[i].attenuation);
             }
 
             if (lights[i].type == LIGHT_POINT)
             {
-                light = normalize(lights[i].position - fragPosition);
+                light = (lights[i].position - fragPosition);
+                lightDistance = length(light);
+                light = normalize(light);
+                attenuation = 1.0 / (lights[i].attenuation.x + lights[i].attenuation.x * lightDistance + 
+                    lights[i].attenuation.z* (lightDistance*lightDistance));
             }
-
             vec3 halfwayDir = normalize(light + viewD);
+
             float NdotL = max(dot(normal, light), 0.0);
-            lightDot += lights[i].color.rgb*NdotL;
+            lightDot += lights[i].color.rgb*NdotL*attenuation;
 
             float specCo = 0.0;
-            if (NdotL > 0.0 && blinn == 0) specCo = pow(max(0.0, dot(viewD, reflect(-(light), normal))),shine); // 16 refers to shine
+            if (NdotL > 0.0 && blinn == 0) specCo = pow(max(0.0, dot(viewD, reflect(-(light), normal))),16); // 16 refers to shine
             if (NdotL > 0.0 && blinn == 1) specCo = pow(max(0.0, dot(halfwayDir, normal)),16); // 16 refers to shine
-            specular += specCo * shine;
+            specular += specCo * shine * attenuation;
         }
     }
+
 
     finalColor = (texelColor*((colDiffuse + vec4(specular, 1.0))*vec4(lightDot, 1.0)));
     finalColor += texelColor*(ambient/10.0)*colDiffuse;

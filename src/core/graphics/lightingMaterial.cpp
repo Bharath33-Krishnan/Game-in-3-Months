@@ -46,7 +46,7 @@ void Core::LightingMaterial::setMaterial(Model model){
         model.materials[0].maps[MATERIAL_MAP_SPECULAR].texture = textures[(i32)texture_types::TEXTURE_MAP_SPECULAR];
 }
 
-Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 target, Color color)
+Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 target,vec3 attenuation, Color color)
 {
     Light light = { 0 };
 
@@ -56,6 +56,7 @@ Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 ta
         light.type = type;
         light.position = position.to_vec();
         light.target = target.to_vec();
+        light.attenuation = attenuation.to_vec();
         light.color = color;
 
         // NOTE: Lighting shader naming must be the provided ones
@@ -64,6 +65,7 @@ Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 ta
         light.positionLoc = GetShaderLocation(shader, TextFormat("lights[%i].position", lightsCount));
         light.targetLoc = GetShaderLocation(shader, TextFormat("lights[%i].target", lightsCount));
         light.colorLoc = GetShaderLocation(shader, TextFormat("lights[%i].color", lightsCount));
+        light.attenuationLoc = GetShaderLocation(shader, TextFormat("lights[%i].attenuation", lightsCount));
 
         UpdateLightValues(light);
         
@@ -88,6 +90,10 @@ void Core::LightingMaterial::UpdateLightValues(Light light)
     // Send to shader light target position values
     float target[3] = { light.target.x, light.target.y, light.target.z };
     SetShaderValue(shader, light.targetLoc, target, SHADER_UNIFORM_VEC3);
+
+    //Set attenuation levels
+    float attenuation[3] = { light.attenuation.x, light.attenuation.y, light.attenuation.z };
+    SetShaderValue(shader, light.attenuationLoc, attenuation, SHADER_UNIFORM_VEC3);
 
     // Send to shader light color values
     float color[4] = { (float)light.color.r/(float)255, (float)light.color.g/(float)255, 
