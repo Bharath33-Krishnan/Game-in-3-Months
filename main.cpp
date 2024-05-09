@@ -1,6 +1,15 @@
-#include "raylib/raylib.h"
-// #include "src/test/Test.h"
 #include "src/core.h"
+
+#define LITERAL_TO_STRING(x) #x
+
+enum PlayerEvents {
+    PLAYER_MOVE_FORWARD = 0,
+    PLAYER_MOVE_BACKWARD,
+    PLAYER_MOVE_LEFT,
+    PLAYER_MOVE_RIGHT,
+    PLAYER_JUMP,
+    PLAYER_ATTACK
+};
 
 class Player : public Core::AbstractEntity {
 private:
@@ -10,15 +19,18 @@ private:
     i32 animsCount;
     i32 currentFrame;
     i32 currentAnimation;
+    bool n;
+
+    f32 speed = 0.01;
+    Core::Scene* scene;
 
 public:
-    Player(Core::Scene* scene) {
-
+    Player(Core::Scene* scene, vec3 pos, bool n) : n{n} {
+        this->scene = scene;
         // NOTE : Gowrish - For some reason `this` becomes NULL
         scene->addEntity(this);
 
-        transform t = getTransform();
-        t.pos = vec3(0, 0, 0);
+        t.pos = pos;
         t.rot = vec3(0, 0, 0);
         t.scale = vec3(0, 0, 0);
 
@@ -34,8 +46,43 @@ public:
     }
 
     void update(f32 delta) {
-        currentFrame = (currentFrame + 1) % anims[currentAnimation].frameCount;
-        UpdateModelAnimation(model, anims[currentAnimation], currentFrame);
+        if (Core::InputHandler::isEvent(PLAYER_MOVE_FORWARD)) {
+            vec3 forward = getTransform().pos - vec3(scene->camera.position);
+            forward = vec3(forward.x, 0.0, forward.z).normalize();
+            getTransform().pos = getTransform().pos + (forward * speed);
+        }
+        
+        if (Core::InputHandler::isEvent(PLAYER_MOVE_BACKWARD)) {
+            vec3 forward = getTransform().pos - vec3(scene->camera.position);
+            forward = vec3(forward.x, 0.0, forward.z).normalize();
+            getTransform().pos = getTransform().pos - (forward * speed);
+        }
+        
+        if (Core::InputHandler::isEvent(PLAYER_MOVE_LEFT)) {
+            vec3 forward = vec3(scene->camera.target) - vec3(scene->camera.position);
+            forward = vec3(forward.x, 0.0, forward.z).normalize();
+            vec3 right = vec3(scene->camera.up) CROSS forward;
+            getTransform().pos = getTransform().pos + (right * speed);
+        }
+
+        if (Core::InputHandler::isEvent(PLAYER_MOVE_RIGHT)) {
+            vec3 forward = vec3(scene->camera.target) - vec3(scene->camera.position);
+            forward = vec3(forward.x, 0.0, forward.z).normalize();
+            vec3 right = vec3(scene->camera.up) CROSS forward;
+            getTransform().pos = getTransform().pos - (right * speed);
+        }
+
+        // if (n) {
+        //     if (Core::InputHandler::isEvent(PLAYER_JUMP)) {
+        //         currentFrame = (currentFrame + 1) % anims[currentAnimation].frameCount;
+        //         UpdateModelAnimation(model, anims[currentAnimation], currentFrame);
+        //     }
+        // } else {
+        //     if (Core::InputHandler::isEvent(PLAYER_ATTACK)) {
+        //         currentFrame = (currentFrame + 1) % anims[currentAnimation].frameCount;
+        //         UpdateModelAnimation(model, anims[currentAnimation], currentFrame);
+        //     }
+        // }
     }
 
     void draw() {
@@ -50,17 +97,28 @@ public:
 
 class MyScene : public Core::Scene {
 public:
+    Player* mainPlayer;
+
     MyScene(Camera& cam) {
         DisableCursor();
         SetTargetFPS(60);
 
-        cam.position = vec3(1.5f).to_vec();
+        cam.position = vec3(0.0, 1.5, 1.0).to_vec();
         cam.target = vec3().to_vec();
         cam.up = vec3(0.0f, 1.0f, 0.0f).to_vec();
         cam.fovy = 45.0f;
         cam.projection = CAMERA_PERSPECTIVE;
 
         setCamera(cam);
+    }
+
+    void setMainPlayer(Player* player) {
+        mainPlayer = player;
+    }
+
+    void update(f32 delta) {
+        camera.target = mainPlayer->getTransform().pos.to_vec();
+        Scene::update(delta);
     }
 };
 
@@ -72,8 +130,20 @@ int main(void)
 
     DisableCursor();
 
+    Core::InputHandler::registerEvent(PLAYER_MOVE_FORWARD,  LITERAL_TO_STRING(PLAYER_MOVE_FORWARD),   {KEY_W},              {});
+    Core::InputHandler::registerEvent(PLAYER_MOVE_BACKWARD, LITERAL_TO_STRING(PLAYER_MOVE_BACKWARD),  {KEY_S},              {});
+    Core::InputHandler::registerEvent(PLAYER_MOVE_LEFT,     LITERAL_TO_STRING(PLAYER_MOVE_LEFT),      {KEY_A},              {});
+    Core::InputHandler::registerEvent(PLAYER_MOVE_RIGHT,    LITERAL_TO_STRING(PLAYER_MOVE_RIGHT),     {KEY_D},              {});
+    Core::InputHandler::registerEvent(PLAYER_JUMP,          LITERAL_TO_STRING(PLAYER_JUMP),           {KEY_SPACE},          {});
+    Core::InputHandler::registerEvent(PLAYER_ATTACK,        LITERAL_TO_STRING(PLAYER_ATTACK),         {MOUSE_BUTTON_LEFT},  {});
+
     MyScene* scene = new MyScene(cam);
-    Player* player = new Player(scene);
+
+    Player* player  = new Player(scene, vec3(0, 1, 0), true);
+    scene->setMainPlayer(player);
+
+    // Player* player2 = new Player(scene, vec3(0, 0.5, 0), false);
+    // Player* player3 = new Player(scene, vec3(0, 0, 0), true);
 
     Core::SceneManager::addScene(scene);
 

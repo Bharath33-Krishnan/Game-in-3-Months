@@ -6,12 +6,14 @@ struct transform {
     vec3 pos;
     vec3 rot;
     vec3 scale;
+    vec3 forward;
+    vec3 up;
 };
 
 namespace Core {
 
 class AbstractEntity {
-private:
+protected:
     transform t;
 public:
     virtual void init() = 0;

@@ -28,12 +28,20 @@ public:
     vec2(f32, f32);
     vec2(f32);
     vec2();
+    f32 magnitude();
+    vec2(Vector2);
 
     void print();
     Vector2 to_vec();
+
+    vec2 normalize();
 };
 
 inline vec2 operator+(const vec2 &a, const vec2 &b) {
+    return vec2(a.x + b.x, a.y + b.y);
+}
+
+inline vec2 operator+=(const vec2 &a, const vec2 &b) {
     return vec2(a.x + b.x, a.y + b.y);
 }
 
@@ -41,7 +49,15 @@ inline vec2 operator-(const vec2 &a, const vec2 &b) {
     return vec2(a.x - b.x, a.y - b.y);
 }
 
+inline vec2 operator-=(const vec2 &a, const vec2 &b) {
+    return vec2(a.x - b.x, a.y - b.y);
+}
+
 inline vec2 operator*(int k, const vec2 &a) { 
+    return vec2(k * a.x, k * a.x);
+}
+
+inline vec2 operator*=(const vec2 &a, int k) {
     return vec2(k * a.x, k * a.x);
 }
 
@@ -56,21 +72,28 @@ public:
     vec3(f32, f32, f32);
     vec3(f32);
     vec3();
+    vec3(Vector3);
+    vec3 normalize();
+    f32 magnitude();
 
     void print();
     Vector3 to_vec();
 };
 
 inline vec3 operator+(const vec3 &a, const vec3 &b) {
-    return vec3(a.x + b.x, a.z + b.z, a.z + b.z);
+    return vec3(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 inline vec3 operator-(const vec3 &a, const vec3 &b) {
-    return vec3(a.x - b.x, a.z - b.z, a.z - b.z);
+    return vec3(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
-inline vec3 operator*(int k, const vec3 &a) { 
-    return vec3(k * a.x, k * a.x, k * a.z);
+inline vec3 operator*(f32 k, const vec3 &a) { 
+    return vec3(k * a.x, k * a.y, k * a.z);
+}
+
+inline vec3 operator*(const vec3 &a, f32 k) { 
+    return vec3(k * a.x, k * a.y, k * a.z);
 }
 
 inline f32 operator DOT(const vec3 &a, const vec3 &b) {
@@ -78,9 +101,10 @@ inline f32 operator DOT(const vec3 &a, const vec3 &b) {
 }
 
 inline vec3 operator CROSS(const vec3 &a, const vec3 &b) {
+    // TODO : Gowrish - Figure out why this doesn't work
     return vec3(
-        a.x * b.y - a.y * b.x, 
-        a.y * b.z - a.z * b.y, 
-        a.z * b.x - a.x * b.z
+        a.y * b.z - a.z * b.y,
+        a.x * b.z - a.z * b.x,
+        a.x * b.y - a.y * b.x
     );
 }

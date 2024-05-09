@@ -10,9 +10,10 @@ namespace Core {
 class Scene {
 private:
     std::vector<Core::AbstractEntity*> entities;
-    Camera camera;
     i32 entityCounter = 0;
+
 public:
+    Camera camera;
     Scene();
 
     void addEntity(Core::AbstractEntity* entity);
