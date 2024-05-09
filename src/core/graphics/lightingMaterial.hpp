@@ -10,6 +10,13 @@ typedef enum {
 #define MAX_LIGHTS  10         // Max dynamic lights supported by shader
 namespace Core{
 
+#define NUM_MAPS 3
+
+enum class texture_types{
+    TEXTURE_MAP_ALBEDO = 0,
+    TEXTURE_MAP_NORMAL = 1,
+    TEXTURE_MAP_SPECULAR = 2
+};
 
 
 typedef struct {   
@@ -38,10 +45,15 @@ private:
     Camera mainCam;
     i32 lightsCount = 0;
     std::vector<Light> lights = std::vector<Light>(MAX_LIGHTS);
+
+
+    Texture2D* textures; 
 public:
     using EngineMaterial::EngineMaterial;
     void initMaterial(vec3 ambientColor,Camera& mainCam);
+    void addTexture(Texture2D& tex,texture_types loc);
     void updateMaterial() override;
+    void setMaterial(Model model) override;
     Light CreateLight(i32 type,vec3 position,vec3 target, Color color);
     void UpdateLightValues(Light light);
     void DrawLightGizmos();

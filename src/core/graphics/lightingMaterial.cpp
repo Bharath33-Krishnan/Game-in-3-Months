@@ -5,6 +5,7 @@ void Core::LightingMaterial::initMaterial(vec3 ambientColor,Camera& mainCam){
     
     shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     shader.locs[SHADER_LOC_MAP_SPECULAR] = GetShaderLocation(shader, "specularMap");
+    textures = (Texture2D*) calloc(NUM_MAPS,sizeof(Texture2D));
 
     int ambientLoc = GetShaderLocation(shader, "ambient");
     const float amibientArray[4] = {ambientColor.x,ambientColor.y,ambientColor.z,1.0};
@@ -27,6 +28,22 @@ void Core::LightingMaterial::DrawLightGizmos(){
         if (lights[i].enabled) DrawSphereEx(lights[i].position, 0.2f, 8, 8, lights[i].color);
         else DrawSphereWires(lights[i].position, 0.2f, 8, 8, ColorAlpha(lights[i].color, 0.3f));
     }
+}
+
+void Core::LightingMaterial::addTexture(Texture2D& tex, texture_types loc){
+    textures[(i32)loc] = tex;
+}
+
+void Core::LightingMaterial::setMaterial(Model model){
+    EngineMaterial::setMaterial(model);
+    if(IsTextureReady(textures[(i32)texture_types::TEXTURE_MAP_ALBEDO]))
+        model.materials[0].maps[MATERIAL_MAP_ALBEDO].texture = textures[(i32)texture_types::TEXTURE_MAP_ALBEDO];
+
+    if(IsTextureReady(textures[(i32)texture_types::TEXTURE_MAP_NORMAL]))
+        model.materials[0].maps[MATERIAL_MAP_NORMAL].texture = textures[(i32)texture_types::TEXTURE_MAP_NORMAL];
+
+    if(IsTextureReady(textures[(i32)texture_types::TEXTURE_MAP_SPECULAR]))
+        model.materials[0].maps[MATERIAL_MAP_SPECULAR].texture = textures[(i32)texture_types::TEXTURE_MAP_SPECULAR];
 }
 
 Core::Light Core::LightingMaterial::CreateLight(i32 type, vec3 position, vec3 target, Color color)
