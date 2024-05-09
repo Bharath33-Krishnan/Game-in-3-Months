@@ -1,18 +1,30 @@
 #include "lightingMaterial.hpp"
+#include "graphics.hpp"
 #include "raylib/raylib.h"
 
-void Core::LightingMaterial::initMaterial(vec3 ambientColor,Camera& mainCam){
+void Core::LightingMaterial::initMaterial(vec3 ambientColor,float shine,Camera& mainCam){
     
     shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     shader.locs[SHADER_LOC_MAP_SPECULAR] = GetShaderLocation(shader, "specularMap");
+
     textures = (Texture2D*) calloc(NUM_MAPS,sizeof(Texture2D));
 
+    int shininessLocation = GetShaderLocation(shader,"shininess");
     int ambientLoc = GetShaderLocation(shader, "ambient");
+
+    int max_lights = MAX_LIGHTS;
+    SetShaderValue(shader, GetShaderLocation(shader, "max_lights"), &max_lights, SHADER_UNIFORM_FLOAT);
+
     const float amibientArray[4] = {ambientColor.x,ambientColor.y,ambientColor.z,1.0};
     SetShaderValue(shader, ambientLoc, amibientArray, SHADER_UNIFORM_VEC4);
+
+    SetShaderValue(shader, shininessLocation , &shine , SHADER_UNIFORM_FLOAT);
+
+    this->shine = shine;
     this->ambientColor = ambientColor;
     this->mainCam = mainCam;
 
+    GraphicsEngine::RegisterMaterial(this);
 }
 
 void Core::LightingMaterial::updateMaterial(){

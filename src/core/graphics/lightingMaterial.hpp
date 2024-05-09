@@ -42,6 +42,7 @@ typedef struct {
 class LightingMaterial:public EngineMaterial{
 private:
     vec3 ambientColor;
+    f32 shine;
     Camera mainCam;
     i32 lightsCount = 0;
     std::vector<Light> lights = std::vector<Light>(MAX_LIGHTS);
@@ -50,7 +51,7 @@ private:
     Texture2D* textures; 
 public:
     using EngineMaterial::EngineMaterial;
-    void initMaterial(vec3 ambientColor,Camera& mainCam);
+    void initMaterial(vec3 ambientColor,float shine,Camera& mainCam);
     void addTexture(Texture2D& tex,texture_types loc);
     void updateMaterial() override;
     void setMaterial(Model model) override;

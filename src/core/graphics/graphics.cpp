@@ -2,11 +2,18 @@
 #include "raylib/raylib.h"
 
 
-Core::GraphicsEngine::GraphicsEngine(){
-    materials = std::vector<EngineMaterial*>(MAX_MATERIALS_PER_SCENE);
+//Initialisation
+std::vector<Core::EngineMaterial*> Core::GraphicsEngine::materials;
+i32 Core::GraphicsEngine::registeredMaterialsNum; 
+f32 Core::GraphicsEngine::gammaCorrection;
+
+void Core::GraphicsEngine::InitialiseEngine(f32 gammaCorrection){
+    registeredMaterialsNum = 0;
+    gammaCorrection = 2.2;
+    materials = std::vector<Core::EngineMaterial*>(MAX_MATERIALS_PER_SCENE);
 }
 
-Core::GraphicsEngine::~GraphicsEngine(){
+void Core::GraphicsEngine::DestroyMaterials(){
     for(auto &material : materials){
         if(!material)
             break;
