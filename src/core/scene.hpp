@@ -13,8 +13,6 @@ private:
     std::vector<Core::AbstractEntity*> entities;
     Camera camera;
     i32 entityCounter = 0;
-protected:
-    GraphicsEngine* gfxEngine;
 public:
     Scene();
 

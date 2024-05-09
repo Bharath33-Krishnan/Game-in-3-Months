@@ -1,6 +1,7 @@
 #include "data_types.hpp"
 #include "raylib/raylib.h"
 #include "src/core.h"
+#include "src/core/graphics/graphics.hpp"
 
 class Player : public Core::AbstractEntity {
 private:
@@ -45,8 +46,8 @@ public:
         UpdateModelAnimation(model, anims[currentAnimation], currentFrame);
     }
 
-    void* getModel(){
-        return (void*)&model;
+    Model* getModel(){
+        return &model;
     }
 
     void draw() {
@@ -62,13 +63,11 @@ public:
 
 class MyScene : public Core::Scene {
 public:
-    MyScene(Camera& cam, Core::GraphicsEngine* gfxEngine) {
+    MyScene(Camera& cam) {
         DisableCursor();
         SetTargetFPS(60);
 
 
-
-        this->gfxEngine = gfxEngine;
         cam.position = vec3(1.5f).to_vec();
         cam.target = vec3().to_vec();
         cam.up = vec3(0.0f, 1.0f, 0.0f).to_vec();
@@ -88,29 +87,22 @@ int main(void)
 
     DisableCursor();
 
-    Core::GraphicsEngine* gfxEngine = new Core::GraphicsEngine();
+    // Core::GraphicsEngine* gfxEngine = new Core::GraphicsEngine();
+    Core::GraphicsEngine::InitialiseEngine(2.2);
     
     Texture2D albedoTex = LoadTexture("../res/Textures/Rock_albedo.png");
     Texture2D normalTex = LoadTexture("../res/Textures/Rock_normal.png");
 
     Core::LightingMaterial* mat1 = new Core::LightingMaterial("../res/shaders/lighting.vert.glsl","../res/shaders/lighting.frag.glsl"); 
-    mat1->initMaterial(vec3(0.1,0.0,0.5),cam);
-    f32 shine = .5;
-
-    int shininessLocation = GetShaderLocation(mat1->getShader(),"shininess");
-    SetShaderValue(mat1->getShader(), shininessLocation , &shine , SHADER_UNIFORM_FLOAT);
-
-    //IMPORTANT - Register material to gfx engine
-    gfxEngine->RegisterMaterial(mat1);
-
+    mat1->initMaterial(vec3(0.1,0.0,0.5),10.45,cam);
 
     // mat1->CreateLight(LIGHT_DIRECTIONAL, vec3(1.0f,2.0f,1.0f) ,vec3(0.0),WHITE);
-    mat1->CreateLight(LIGHT_POINT, vec3(0.0f,1.0f,.0f) ,vec3(0.0),vec3(.6,.2,.1),RED);
+    mat1->CreateLight(LIGHT_POINT, vec3(1.0f,2.0f,.0f) ,vec3(0.0),vec3(1.6,1.2,.1),BLUE);
     mat1->addTexture(albedoTex, Core::texture_types::TEXTURE_MAP_ALBEDO);
     mat1->addTexture(normalTex, Core::texture_types::TEXTURE_MAP_NORMAL);
 
 
-    MyScene* scene = new MyScene(cam,gfxEngine);
+    MyScene* scene = new MyScene(cam);
     Player* player = new Player(scene);
 
     //IMPORTANT - Register entity to material

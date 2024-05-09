@@ -23,7 +23,7 @@ out vec4 finalColor;
 
 // NOTE: Add here your custom variables
 
-#define     MAX_LIGHTS              4
+#define     MAX_LIGHTS 20
 #define     LIGHT_DIRECTIONAL       0
 #define     LIGHT_POINT             1
 
@@ -37,6 +37,7 @@ struct Light {
 };
 
 // Input lighting values
+uniform int max_lights;
 uniform Light lights[MAX_LIGHTS];
 uniform vec4 ambient;
 uniform vec3 viewPos;

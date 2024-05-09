@@ -3,10 +3,6 @@
 #include "data_types.hpp"
 #include "material.hpp"
 
-
-//Note: Bharath -> Remove this LSP being Crazy
-#include "raylib/raylib.h"
-
 namespace Core{
 
 #define MAX_MATERIALS_PER_SCENE 30
@@ -14,16 +10,18 @@ namespace Core{
 //Note : Bharath - This class handle contains all shaders and issues draw calls 
 class GraphicsEngine{
 private:
-    std::vector<EngineMaterial*> materials;
-    i32 registeredMaterialsNum = 0;
-    f32 gammaCorrection = 2.2;
+    static std::vector<EngineMaterial*> materials; 
+    static i32 registeredMaterialsNum;
+    static f32 gammaCorrection;
 
 public:
-    GraphicsEngine();
-    ~GraphicsEngine();
+    // GraphicsEngine();
+    // ~GraphicsEngine();
     
-    void RegisterMaterial(EngineMaterial* mat);
-    void DrawEntites(vec3 camPos);
+    static void InitialiseEngine(f32 gammaCorrection);
+    static void RegisterMaterial(EngineMaterial* mat);
+    static void DrawEntites(vec3 camPos);
+    static void DestroyMaterials();
 };
 
 };

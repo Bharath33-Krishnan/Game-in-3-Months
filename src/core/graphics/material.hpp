@@ -44,7 +44,7 @@ public:
     }
 
     inline void SubscribeToMaterial(AbstractEntity* entity){
-        Model* model = (Model*)(entity->getModel());
+        Model* model = entity->getModel();
         if(model != nullptr)
             setMaterial(*model);
 
