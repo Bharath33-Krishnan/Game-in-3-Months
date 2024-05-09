@@ -13,8 +13,6 @@ private:
     i32 animsCount;
     i32 currentFrame;
     i32 currentAnimation;
-    Texture2D albedoTex;
-    Texture2D normalTex;
 
 public:
     Player(Core::Scene* scene) {
@@ -39,11 +37,6 @@ public:
         // model = LoadModelFromMesh(cube_mesh);
         GenMeshTangents(model.meshes);
         anims = LoadModelAnimations("../res/boom.m3d", &this->animsCount);
-        albedoTex = LoadTexture("../res/Textures/Rock_albedo.png");
-        normalTex = LoadTexture("../res/Textures/Rock_normal.png");
-
-        addTexture(albedoTex, MATERIAL_MAP_ALBEDO);
-        addTexture(normalTex, MATERIAL_MAP_NORMAL);
     }
 
     void addTexture(Texture2D& tex,i32 loc){
@@ -55,8 +48,8 @@ public:
         UpdateModelAnimation(model, anims[currentAnimation], currentFrame);
     }
 
-    void setMaterial(Core::EngineMaterial* mat){
-        model.materials[0].shader = mat->getShader();
+    void* getModel(){
+        return (void*)&model;
     }
 
     void draw() {
@@ -67,8 +60,6 @@ public:
     ~Player() {
         UnloadModel(model);
         UnloadModelAnimations(anims, animsCount);
-        UnloadTexture(albedoTex);
-        UnloadTexture(normalTex);
     }
 };
 
@@ -79,25 +70,6 @@ public:
         SetTargetFPS(60);
 
 
-        Core::LightingMaterial* mat1 = new Core::LightingMaterial("../res/shaders/lighting.vert.glsl","../res/shaders/lighting.frag.glsl"); 
-        mat1->initMaterial(vec3(0.1,0.0,0.5),cam);
-        f32 shine = .5;
-
-
-        int shininessLocation = GetShaderLocation(mat1->getShader(),"shininess");
-        SetShaderValue(mat1->getShader(), shininessLocation , &shine , SHADER_UNIFORM_FLOAT);
-
-
-        //IMPORTANT - Register material to gfx engine
-        gfxEngine->RegisterMaterial(mat1);
-
-
-        Player* player = new Player(this);
-        //IMPORTANT - Register entity to material
-        mat1->SubscribeToMaterial(player);
-
-        mat1->CreateLight(LIGHT_DIRECTIONAL, vec3(1.0f,2.0f,1.0f) ,vec3(0.0),WHITE);
-        // mat1->CreateLight(LIGHT_POINT, vec3(2.0f,2.0f,1.0f) ,vec3(0.0),YELLOW);
 
         this->gfxEngine = gfxEngine;
         cam.position = vec3(1.5f).to_vec();
@@ -121,11 +93,38 @@ int main(void)
 
     Core::GraphicsEngine* gfxEngine = new Core::GraphicsEngine();
     
+    Texture2D albedoTex = LoadTexture("../res/Textures/Rock_albedo.png");
+    Texture2D normalTex = LoadTexture("../res/Textures/Rock_normal.png");
+
+    Core::LightingMaterial* mat1 = new Core::LightingMaterial("../res/shaders/lighting.vert.glsl","../res/shaders/lighting.frag.glsl"); 
+    mat1->initMaterial(vec3(0.1,0.0,0.5),cam);
+    f32 shine = .5;
+
+    int shininessLocation = GetShaderLocation(mat1->getShader(),"shininess");
+    SetShaderValue(mat1->getShader(), shininessLocation , &shine , SHADER_UNIFORM_FLOAT);
+
+    //IMPORTANT - Register material to gfx engine
+    gfxEngine->RegisterMaterial(mat1);
+
+
+    // mat1->CreateLight(LIGHT_DIRECTIONAL, vec3(1.0f,2.0f,1.0f) ,vec3(0.0),WHITE);
+    mat1->CreateLight(LIGHT_POINT, vec3(2.0f,2.0f,1.0f) ,vec3(0.0),RED);
+    mat1->addTexture(albedoTex, Core::texture_types::TEXTURE_MAP_ALBEDO);
+    mat1->addTexture(normalTex, Core::texture_types::TEXTURE_MAP_NORMAL);
+
+
     MyScene* scene = new MyScene(cam,gfxEngine);
+    Player* player = new Player(scene);
+
+    //IMPORTANT - Register entity to material
+    mat1->SubscribeToMaterial(player);
 
     Core::SceneManager::addScene(scene);
 
     Core::SceneManager::run();
 
+
+    UnloadTexture(albedoTex);
+    UnloadTexture(normalTex);
     CloseWindow();
 }
