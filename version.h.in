@@ -1,0 +1,4 @@
+#pragma once
+
+#define VERSION_MAJOR @example_VERSION_MAJOR@
+#define VERSION_MINOR @example_VERSION_MINOR@

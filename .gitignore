@@ -11,26 +11,19 @@
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
 
 # Fortran module files
 *.mod
 *.smod
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
 
+#BuildDir
+build/
 
 # Cmake
 CMakeLists.txt.user
@@ -44,3 +37,4 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+.cache/
