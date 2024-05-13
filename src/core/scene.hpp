@@ -13,15 +13,15 @@ private:
     i32 entityCounter = 0;
 
 public:
-    Camera camera;
+    Camera2D camera;
     Scene();
 
     void addEntity(Core::AbstractEntity* entity);
     virtual void update(f32 delta);
     virtual void draw();
     inline i32 getEntitiesCount() { return entityCounter; }
-    inline Camera& getCamera() { return camera; }
-    inline void setCamera(Camera cam) { camera = cam; }
+    inline Camera2D& getCamera() { return camera; }
+    inline void setCamera(Camera2D cam) { camera = cam; }
 
     ~Scene();
 };

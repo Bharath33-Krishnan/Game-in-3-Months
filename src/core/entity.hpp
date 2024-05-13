@@ -3,11 +3,9 @@
 #include "data_types.hpp"
 
 struct transform {
-    vec3 pos;
-    vec3 rot;
-    vec3 scale;
-    vec3 forward;
-    vec3 up;
+    vec2 pos;
+    f32 rot;
+    f32 scale;
 };
 
 namespace Core {

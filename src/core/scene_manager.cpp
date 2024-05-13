@@ -24,10 +24,7 @@ void Core::SceneManager::run() {
         BeginDrawing();
             ClearBackground(WHITE);
             current_scene->update(GetFrameTime());
-            BeginMode3D(current_scene->getCamera());
-                current_scene->draw();
-                DrawGrid(10, 1.0f);
-            EndMode3D();
+            current_scene->draw();
         EndDrawing();
     }
 

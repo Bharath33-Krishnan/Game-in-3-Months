@@ -53,12 +53,12 @@ inline vec2 operator-=(const vec2 &a, const vec2 &b) {
     return vec2(a.x - b.x, a.y - b.y);
 }
 
-inline vec2 operator*(int k, const vec2 &a) { 
-    return vec2(k * a.x, k * a.x);
+inline vec2 operator*(f32 k, const vec2 &a) { 
+    return vec2(k * a.x, k * a.y);
 }
 
-inline vec2 operator*=(const vec2 &a, int k) {
-    return vec2(k * a.x, k * a.x);
+inline vec2 operator*=(const vec2 &a, f32 k) {
+    return vec2(k * a.x, k * a.y);
 }
 
 inline f32 operator DOT(const vec2 &a, const vec2 &b) {
