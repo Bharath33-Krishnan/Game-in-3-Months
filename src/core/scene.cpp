@@ -44,9 +44,9 @@ void Core::Scene::update(f32 delta) {
 }
 
 void Core::Scene::draw() {
-    // for (Core::AbstractEntity* entity : entities) {
-    //     // NOTE : Gowrish - Checking for NULLs since array is pre initialized
-    //     if (entity) entity->draw();
-    // }
-    Core::GraphicsEngine::DrawEntites(vec3(camera.position.x,camera.position.y,camera.position.z));
+    for (Core::AbstractEntity* entity : entities) {
+        // NOTE : Gowrish - Checking for NULLs since array is pre initialized
+        if (entity) entity->draw();
+    }
+    // Core::GraphicsEngine::DrawEntites(vec3(camera.position.x,camera.position.y,camera.position.z));
 }
