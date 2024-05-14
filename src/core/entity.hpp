@@ -2,6 +2,7 @@
 
 #include "data_types.hpp"
 
+
 struct transform {
     vec2 pos;
     f32 rot;
@@ -17,7 +18,7 @@ public:
     virtual void init() = 0;
     virtual void update(f32 delta) = 0;
     virtual void draw() = 0;
-    virtual ~AbstractEntity(){};
+    virtual ~AbstractEntity(){}
 
     inline transform& getTransform() { return t; }
 };
