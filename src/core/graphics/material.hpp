@@ -43,18 +43,6 @@ public:
         }
     }
 
-    inline void SubscribeToMaterial(AbstractEntity* entity){
-        Model* model = entity->getModel();
-        if(model != nullptr)
-            setMaterial(*model);
-
-        if(subscribedEntitiesNum >= MAX_ENTITIES_PER_MATERIAL){
-            TraceLog(LOG_INFO,"Line %d Function %s File %s:  max materials size reacged",__LINE__,__FUNCTION__,__FILE__); 
-            return;
-        }
-        subscribedEntities[subscribedEntitiesNum++] = entity;
-    }
-
     inline Shader getShader(){
         return shader;
     }
@@ -74,9 +62,6 @@ public:
 
     
     virtual void updateMaterial(){};
-    virtual void setMaterial(Model model){
-        model.materials[0].shader = shader;
-    }
 
 };
 
