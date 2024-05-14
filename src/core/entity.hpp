@@ -1,7 +1,6 @@
 #pragma once
 
 #include "data_types.hpp"
-#include <vector>
 
 
 struct transform {
@@ -12,8 +11,6 @@ struct transform {
 
 namespace Core {
 
-class EngineMaterial;
-
 class AbstractEntity {
 protected:
     transform t;
@@ -21,7 +18,6 @@ public:
     virtual void init() = 0;
     virtual void update(f32 delta) = 0;
     virtual void draw() = 0;
-    virtual Model* getModel(){return nullptr;}
     virtual ~AbstractEntity(){}
 
     inline transform& getTransform() { return t; }

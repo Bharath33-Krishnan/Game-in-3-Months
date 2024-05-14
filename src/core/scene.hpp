@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "entity.hpp"
-#include "graphics/graphics.hpp"
 
 #define MAX_ENTITIES_PER_SCENE 100
 
