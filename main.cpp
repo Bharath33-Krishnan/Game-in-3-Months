@@ -1,5 +1,6 @@
 #include "raylib/raylib.h"
 #include "src/core.h"
+#include "src/core/graphics/material.hpp"
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -17,6 +18,7 @@ private:
     i32 animsCount;
     i32 currentFrame;
     i32 currentAnimation;
+    Core::EngineMaterial* material;
 
     f32 speed = 1000.0f;
     Core::Scene* scene;
@@ -32,6 +34,7 @@ public:
         t.pos = pos;
         t.rot = 0.0f;
         t.scale = 0.5f;
+        material = new Core::EngineMaterial(0,"../res/shaders/simple_frag.frag.glsl");
 
         currentFrame = 0;
         currentAnimation = 0;
@@ -67,11 +70,14 @@ public:
 
 
     void draw() {
-        DrawTextureEx(tex, getTransform().pos.to_vec(), getTransform().rot, getTransform().scale, WHITE);
+        BeginShaderMode(material->getShader());
+            DrawTextureEx(tex, getTransform().pos.to_vec(), getTransform().rot, getTransform().scale, WHITE);
+        EndShaderMode();
     }
 
     ~Player() {
         UnloadTexture(tex);
+        delete material;
     }
 };
 
