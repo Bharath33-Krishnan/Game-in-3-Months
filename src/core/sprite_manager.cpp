@@ -118,4 +118,61 @@ void Core::SpriteManager::Destroy(){
     }
 }
 
+// ************** SPRITE SHEET CLASS ***************
 
+SpriteSheet::SpriteSheet(){
+    tex = nullptr;
+}
+
+SpriteSheet::SpriteSheet(const char* label,vec2 initial_padding,int max_frame,int num_row,int num_rows,bool loop){
+        tex = Core::SpriteManager::getTexture(label);
+        if(tex == nullptr || num_row >= num_rows){
+            TraceLog(LOG_INFO, "Texture Could Not Be Found");
+        }
+        curr_frame = 0;
+        frame_counter = 0;
+        this->loop = loop;
+        this->stride = {(float)tex->width / max_frame ,(float)tex->height/num_rows};
+        this->max_frame = max_frame;
+        this->initial_padding = initial_padding;
+        this->initial_padding.y += num_row * this->stride.y;
+        this->frame_speed =  max_frame;
+}
+
+
+SpriteSheet SpriteSheet::CreateSpriteSheet(const char* label,vec2 initial_padding,int max_frame,int num_row,int num_rows,bool loop)
+{
+    return SpriteSheet(label,initial_padding,max_frame,num_row,num_rows,loop);
+}
+
+void SpriteSheet::AnimateFrame(transform& transform){
+    if(tex == nullptr)
+        return;
+
+    float fps = GetFPS();
+    frame_counter++;
+
+    if(frame_counter >= fps/frame_speed){
+        frame_counter = 0;
+        curr_frame = (curr_frame + 1);
+        if(loop)
+            curr_frame %= max_frame;
+        else if(curr_frame >= max_frame)
+            curr_frame = max_frame - 1;
+    }
+
+    DrawFrame(curr_frame , transform);
+
+}
+
+
+void SpriteSheet::DrawFrame(int frame,transform& transform){
+    if(tex == nullptr)
+        return;
+    if(frame >= max_frame){
+        frame = max_frame - 1;
+    }
+    Rectangle src = {initial_padding.x + stride.x * frame,initial_padding.y,stride.x,stride.y};
+    Rectangle dest = {transform.pos.x, transform.pos.y , stride.x * transform.scale , stride.y * transform.scale};
+    DrawTexturePro(*tex,src, dest, {stride.x/2,stride.y/2}, transform.rot, WHITE);
+}
