@@ -1,6 +1,6 @@
 #include "raylib/raylib.h"
 #include "src/core.h"
-#include "src/core/graphics/material.hpp"
+
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -43,9 +43,9 @@ public:
     }
 
     void init() {
-        Image img = LoadImage("../res/player.png");
-        tex = LoadTextureFromImage(img);
-        UnloadImage(img);
+        // Image img = LoadImage("../res/player.png");
+        tex = *Core::SpriteManager::getTexture("player1");
+        // UnloadImage(img);
     }
 
     void update(f32 delta) {
@@ -82,6 +82,8 @@ public:
 };
 
 class MyScene : public Core::Scene {
+private:
+    float time = 0;
 public:
     Player* mainPlayer;
 
@@ -90,6 +92,19 @@ public:
         SetTargetFPS(60);
 
         setCamera(cam);
+        Core::SpriteManager::loadTexture("player1","../res/player.png");
+        Core::SpriteManager::loadTexture("player2","../res/player.png");
+    };
+
+    void loadResources(){
+        //NOTE : Bharath -> Load Tilemap file and other big files
+        TraceLog(LOG_INFO,"Loading...");
+        while(time <= 5){
+            time = GetTime();
+        }
+        TraceLog(LOG_INFO,"Finished Loading");
+        loading = false;
+        
     }
 
     void setMainPlayer(Player* player) {
@@ -120,9 +135,10 @@ int main(void)
 
     MyScene* scene = new MyScene(cam);
 
+    Core::SceneManager::addScene(scene);
+
     Player* player  = new Player(scene, vec2(GetRenderWidth()/2.0, GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
-    Core::SceneManager::addScene(scene);
 
     Core::SceneManager::run();
 

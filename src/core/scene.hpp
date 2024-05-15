@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 #include <vector>
 #include "entity.hpp"
 
@@ -13,12 +14,15 @@ private:
     i32 entityCounter = 0;
 
 public:
+    bool loading;
+    std::thread loadThread;
     Camera2D camera;
     Scene();
 
     void addEntity(Core::AbstractEntity* entity);
     virtual void update(f32 delta);
     virtual void draw();
+    virtual void loadResources(){loading = false;};
     inline i32 getEntitiesCount() { return entityCounter; }
     inline Camera2D& getCamera() { return camera; }
     inline void setCamera(Camera2D cam) { camera = cam; }

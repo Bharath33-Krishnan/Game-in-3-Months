@@ -1,11 +1,12 @@
 #include "scene.hpp"
 #include "input.hpp"
-#include "raylib/raylib.h"
 #include <iostream>
 
 
 Core::Scene::Scene() {
     entities = std::vector<Core::AbstractEntity*>(MAX_ENTITIES_PER_SCENE);
+    loadThread = std::thread(&Core::Scene::loadResources,this);
+    loading = true;
 }
 
 void Core::Scene::addEntity(Core::AbstractEntity* entity) {
