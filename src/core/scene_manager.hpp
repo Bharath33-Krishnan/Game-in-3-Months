@@ -12,6 +12,4 @@ public:
     static void run();
     static void cleanUp();
 };
-
-
 }

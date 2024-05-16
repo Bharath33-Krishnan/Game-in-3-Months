@@ -23,6 +23,7 @@ private:
     f32 speed = 1000.0f;
     Core::Scene* scene;
 
+    SpriteSheet sprite;
     Texture2D tex;
 
 public:
@@ -33,7 +34,7 @@ public:
 
         t.pos = pos;
         t.rot = 0.0f;
-        t.scale = 0.5f;
+        t.scale = 1.f;
         material = new Core::EngineMaterial(0,"../res/shaders/simple_frag.frag.glsl");
 
         currentFrame = 0;
@@ -45,6 +46,8 @@ public:
     void init() {
         // Image img = LoadImage("../res/player.png");
         tex = *Core::SpriteManager::getTexture("player1");
+        sprite = SpriteSheet::CreateSpriteSheet("player2", vec2(0.0,0.0), 5.0, 1.0, 4.0 , true);
+        sprite.ChangeFPS(sprite.getFPS()*4);
         // UnloadImage(img);
     }
 
@@ -71,7 +74,8 @@ public:
 
     void draw() {
         BeginShaderMode(material->getShader());
-            DrawTextureEx(tex, getTransform().pos.to_vec(), getTransform().rot, getTransform().scale, WHITE);
+            // DrawTextureEx(tex, getTransform().pos.to_vec(), getTransform().rot, getTransform().scale, WHITE);
+            sprite.AnimateFrame(getTransform());
         EndShaderMode();
     }
 
@@ -93,15 +97,15 @@ public:
 
         setCamera(cam);
         Core::SpriteManager::loadTexture("player1","../res/player.png");
-        Core::SpriteManager::loadTexture("player2","../res/player.png");
+        Core::SpriteManager::loadTexture("player2","../res/enemy_test.png");
     };
 
     void loadResources(){
         //NOTE : Bharath -> Load Tilemap file and other big files
         TraceLog(LOG_INFO,"Loading...");
-        while(time <= 5){
-            time = GetTime();
-        }
+        // while(time <= 5){
+        //     time = GetTime();
+        // }
         TraceLog(LOG_INFO,"Finished Loading");
         loading = false;
         
