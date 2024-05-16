@@ -174,5 +174,5 @@ void SpriteSheet::DrawFrame(int frame,transform& transform){
     }
     Rectangle src = {initial_padding.x + stride.x * frame,initial_padding.y,stride.x,stride.y};
     Rectangle dest = {transform.pos.x, transform.pos.y , stride.x * transform.scale , stride.y * transform.scale};
-    DrawTexturePro(*tex,src, dest, {stride.x/2,stride.y/2}, transform.rot, WHITE);
+    DrawTexturePro(*tex,src, dest, {stride.x * transform.scale/2,stride.y * transform.scale/2}, transform.rot, WHITE);
 }

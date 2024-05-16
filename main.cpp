@@ -34,7 +34,7 @@ public:
 
         t.pos = pos;
         t.rot = 0.0f;
-        t.scale = 1.f;
+        t.scale = 2.f;
         material = new Core::EngineMaterial(0,"../res/shaders/simple_frag.frag.glsl");
 
         currentFrame = 0;
