@@ -9,6 +9,7 @@ public:
             drawGfx();
         }
     }
+
     virtual void drawGfx() = 0;
 };
 

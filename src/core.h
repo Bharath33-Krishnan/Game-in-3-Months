@@ -5,6 +5,5 @@
 #include "data_types.hpp"
 #include "core/input.hpp"
 #include "core/scene_manager.hpp"
-#include "core/sprite_manager.hpp"
 #include "core/graphics/material.hpp"
 #include "core/drawable.hpp"

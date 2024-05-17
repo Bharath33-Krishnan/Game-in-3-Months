@@ -4,8 +4,8 @@
 #include <vector>
 #include "entity.hpp"
 
-#define MAX_ENTITIES_PER_SCENE 100
-#define CHUNK_SIZE 50
+#define MAX_ENTITIES_PER_SCENE 1000
+#define CHUNK_SIZE 25
 
 namespace Core {
 

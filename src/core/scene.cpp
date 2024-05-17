@@ -84,14 +84,15 @@ void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u3
 
     for(u32 layer = 0; layer <= max_layer; layer++){
 
-        for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
-            for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 + CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
+        for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 + CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
+            for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
                 for (Core::AbstractEntity* entity : entities) {
                     // NOTE : Gowrish - Checking for NULLs since array is pre initialized
                     if (!entity)
                         continue;
                     if(!isInsideChunk(vec2(XChunk,YChunk), entity->getTransform().pos))
                         continue;
+                    // TraceLog(LOG_INFO, "%d %d",XChunk,YChunk); 
                     entity->draw(layer);
                 }
             }

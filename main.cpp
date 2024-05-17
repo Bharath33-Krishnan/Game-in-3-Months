@@ -1,5 +1,6 @@
 #include "raylib/raylib.h"
 #include "src/core.h"
+#include "src/assets/sprite_manager.hpp"
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -114,6 +115,7 @@ public:
         t.pos = pos;
         t.rot = 0.0f;
         t.scale = 3.f;
+        t.pivotOffset = vec2(0.0,50.0);
         // this->setLayer(2);
 
         currentFrame = 0;
@@ -143,6 +145,7 @@ public:
         // if (Core::InputHandler::isEvent(PLAYER_MOVE_RIGHT)) {
         //     vel.x += speed;
         // }
+        // getTransform().rot += speed * delta;
         // if (vel.x == 0 && vel.y == 0) return;
 
         // getTransform().pos = getTransform().pos + (speed * delta) * vel.normalize();
@@ -193,7 +196,7 @@ public:
 };
 
 int main(void) {
-    InitWindow(1600, 900, "Test");
+    InitWindow(1280, 720, "Test");
 
     Camera2D cam;
     cam.offset = (Vector2){ GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
@@ -215,7 +218,7 @@ int main(void) {
     // for(int i = 0;i<=900;i++){
     //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
     // }
-   new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
+    new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
     scene->setMainPlayer(player);
 

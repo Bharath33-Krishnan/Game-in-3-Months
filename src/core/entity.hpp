@@ -5,6 +5,7 @@
 
 struct transform {
     vec2 pos;
+    vec2 pivotOffset;
     f32 rot;
     f32 scale;
 };
