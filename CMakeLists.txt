@@ -15,7 +15,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/utilities)
 add_executable(${CMAKE_PROJECT_NAME}.out ${src})
 
 #Adding our subdir => light_lib is made
-foreach(subdir IN ITEMS test utilities core) #Append extra subdirs to the end of the list for src
+foreach(subdir IN ITEMS assets utilities core) #Append extra subdirs to the end of the list for src
     add_subdirectory(${CMAKE_SOURCE_DIR}/src/${subdir})
     target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE ${subdir}_lib)
     add_dependencies(${CMAKE_PROJECT_NAME}.out ${subdir}_lib)
