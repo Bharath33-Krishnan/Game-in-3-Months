@@ -12,6 +12,7 @@ class Scene {
 private:
     std::vector<Core::AbstractEntity*> entities;
     i32 entityCounter = 0;
+    u32 max_layer;
 
 public:
     bool loading;

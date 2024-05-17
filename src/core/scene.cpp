@@ -1,5 +1,6 @@
 #include "scene.hpp"
 #include "input.hpp"
+#include <algorithm>
 #include <iostream>
 
 
@@ -16,6 +17,7 @@ void Core::Scene::addEntity(Core::AbstractEntity* entity) {
         std::cout << "Maximum number of entities reached" << std::endl;
         return;
     }
+    max_layer = std::max(max_layer,entity->getLayer());
     entities[entityCounter++] = entity;
 }
 
@@ -38,15 +40,23 @@ void Core::Scene::update(f32 delta) {
         //     TraceLog(LOG_INFO, "[Inpute Handler] %s occurred", Core::InputHandler::EVENTS_NAME_MAP[it->first]);
         // }
     }
+    max_layer = 0;
     for (Core::AbstractEntity* entity : entities) {
         // NOTE : Gowrish - Checking for NULLs since array is pre initialized
-        if (entity) entity->update(delta);
+        if (entity){
+            entity->update(delta);
+            max_layer = std::max(max_layer,entity->getLayer());
+        }
     }
 }
 
 void Core::Scene::draw() {
-    for (Core::AbstractEntity* entity : entities) {
-        // NOTE : Gowrish - Checking for NULLs since array is pre initialized
-        if (entity) entity->draw();
+    for(u32 layer = 0; layer <= max_layer; layer++){
+        for (Core::AbstractEntity* entity : entities) {
+            // NOTE : Gowrish - Checking for NULLs since array is pre initialized
+            if (entity){
+                    entity->draw(layer);
+            } 
+        }
     }
 }
