@@ -5,6 +5,7 @@
 #include "entity.hpp"
 
 #define MAX_ENTITIES_PER_SCENE 100
+#define CHUNK_SIZE 50
 
 namespace Core {
 

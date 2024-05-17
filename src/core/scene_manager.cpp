@@ -1,4 +1,5 @@
 #include "scene_manager.hpp"
+#include "raylib/raylib.h"
 #include <string>
 
 std::vector<Core::Scene*> Core::SceneManager::scenes;
@@ -35,7 +36,9 @@ void Core::SceneManager::run() {
         BeginDrawing();
             ClearBackground(WHITE);
             current_scene->update(GetFrameTime());
-            current_scene->draw();
+            BeginMode2D(current_scene->getCamera());
+                current_scene->draw();
+            EndMode2D();
         EndDrawing();
     }
 

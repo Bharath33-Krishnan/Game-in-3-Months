@@ -114,7 +114,7 @@ public:
         t.pos = pos;
         t.rot = 0.0f;
         t.scale = 3.f;
-        this->setLayer(2);
+        // this->setLayer(2);
 
         currentFrame = 0;
         currentAnimation = 0;
@@ -196,8 +196,11 @@ int main(void) {
     InitWindow(1600, 900, "Test");
 
     Camera2D cam;
+    cam.offset = (Vector2){ GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
+    cam.rotation = 0.0f;
+    cam.zoom = 1.0f;
 
-    // DisableCursor();
+    DisableCursor();
 
     Core::InputHandler::registerEvent(PLAYER_MOVE_UP,     LITERAL_TO_STRING(PLAYER_MOVE_FORWARD),   {KEY_W},              {});
     Core::InputHandler::registerEvent(PLAYER_MOVE_DOWN,   LITERAL_TO_STRING(PLAYER_MOVE_BACKWARD),  {KEY_S},              {});
