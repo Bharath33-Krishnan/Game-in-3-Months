@@ -1,7 +1,9 @@
 #include "scene.hpp"
 #include "input.hpp"
+#include "raylib/raylib.h"
 #include <algorithm>
 #include <iostream>
+#include <vector>
 
 
 Core::Scene::Scene() {
@@ -50,13 +52,52 @@ void Core::Scene::update(f32 delta) {
     }
 }
 
+
+void drawNormal(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer);
+void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer);
+
 void Core::Scene::draw() {
+    drawChunk(camera,entities,max_layer);
+}
+
+void drawNormal(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer){
     for(u32 layer = 0; layer <= max_layer; layer++){
         for (Core::AbstractEntity* entity : entities) {
             // NOTE : Gowrish - Checking for NULLs since array is pre initialized
             if (entity){
-                    entity->draw(layer);
-            } 
+                entity->draw(layer);
+            }
         }
     }
+}
+
+
+bool isInsideChunk(vec2 Chunk,vec2 entityPos){
+
+    return (entityPos.x < Chunk.x && entityPos.x >= Chunk.x - CHUNK_SIZE)  && (entityPos.y < Chunk.y && entityPos.y >= Chunk.y - CHUNK_SIZE);
+}
+
+void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer){
+    
+    vec2 screenEdgeX = vec2(mainCam.target.x - GetRenderWidth()/2. , mainCam.target.x + GetRenderWidth()/2.);
+    vec2 screenEdgeY = vec2(mainCam.target.y - GetRenderHeight()/2. , mainCam.target.y + GetRenderHeight()/2.);
+
+    for(u32 layer = 0; layer <= max_layer; layer++){
+
+        for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
+            for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 + CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
+                for (Core::AbstractEntity* entity : entities) {
+                    // NOTE : Gowrish - Checking for NULLs since array is pre initialized
+                    if (!entity)
+                        continue;
+                    if(!isInsideChunk(vec2(XChunk,YChunk), entity->getTransform().pos))
+                        continue;
+                    entity->draw(layer);
+                }
+            }
+
+        }    
+    }
+    
+    // TraceLog(LOG_INFO,"%f %f", mainCam.target.x, mainCam.target.y);
 }

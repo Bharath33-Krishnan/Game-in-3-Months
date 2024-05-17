@@ -106,7 +106,7 @@ public:
         t.pos = pos;
         t.rot = 0.0f;
         t.scale = 3.f;
-        this->setLayer(2);
+        // this->setLayer(2);
 
         currentFrame = 0;
         currentAnimation = 0;
@@ -190,6 +190,9 @@ int main(void)
     InitWindow(1280, 720, "Test");
 
     Camera2D cam;
+    cam.offset = (Vector2){ GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
+    cam.rotation = 0.0f;
+    cam.zoom = 1.0f;
 
     DisableCursor();
 
@@ -207,7 +210,7 @@ int main(void)
     // for(int i = 0;i<=900;i++){
     //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
     // }
-   new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
+    // new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player* player  = new Player(scene, vec2(GetRenderWidth()/2.0, GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 
