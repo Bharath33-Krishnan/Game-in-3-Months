@@ -126,8 +126,11 @@ SpriteSheet::SpriteSheet(){
 
 SpriteSheet::SpriteSheet(const char* label,vec2 initial_padding,int max_frame,int num_row,int num_rows,bool loop){
         tex = Core::SpriteManager::getTexture(label);
-        if(tex == nullptr || num_row >= num_rows){
-            TraceLog(LOG_INFO, "Texture Could Not Be Found");
+        if (tex == nullptr || num_row >= num_rows){
+            TraceLog(LOG_ERROR, 
+                     "Texture Could Not Be Found num_row: %d num_rows: %d", 
+                     num_row, 
+                     num_rows);
         }
         curr_frame = 0;
         frame_counter = 0;
