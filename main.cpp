@@ -13,7 +13,7 @@ enum PlayerEvents {
     PLAYER_ATTACK
 };
 
-class Player : public Core::AbstractEntity {
+class Player : public Core::Drawable {
 private:
     i32 animsCount;
     i32 currentFrame;
@@ -72,7 +72,7 @@ public:
     }
 
 
-    void draw() {
+    void drawGfx() {
         BeginShaderMode(material->getShader());
             // DrawTextureEx(tex, getTransform().pos.to_vec(), getTransform().rot, getTransform().scale, WHITE);
             sprite.AnimateFrame(getTransform());
@@ -82,6 +82,68 @@ public:
     ~Player() {
         UnloadTexture(tex);
         delete material;
+    }
+};
+
+
+class Tree : public Core::Drawable {
+private:
+    i32 animsCount;
+    i32 currentFrame;
+    i32 currentAnimation;
+
+    f32 speed = 1000.0f;
+    Core::Scene* scene;
+
+    SpriteSheet sprite;
+
+public:
+    Tree(Core::Scene* scene, vec2 pos) {
+        this->scene = scene;
+        // NOTE : Gowrish - For some reason `this` becomes NULL
+        scene->addEntity(this);
+
+        t.pos = pos;
+        t.rot = 0.0f;
+        t.scale = 3.f;
+        this->setLayer(2);
+
+        currentFrame = 0;
+        currentAnimation = 0;
+
+        this->init();
+    }
+
+    void init() {
+        // Image img = LoadImage("../res/player.png");
+        sprite = SpriteSheet::CreateSpriteSheet("Tree", vec2(0.0,0.0),4.0, 0.0, 1.0 , true);
+        sprite.ChangeFPS(sprite.getFPS()*4);
+        // UnloadImage(img);
+    }
+
+    void update(f32 delta) {
+        // vec2 vel(0);
+        // if (Core::InputHandler::isEvent(PLAYER_MOVE_UP)) {
+        //     vel.y -= speed;
+        // }
+        // if (Core::InputHandler::isEvent(PLAYER_MOVE_DOWN)) {
+        //     vel.y += speed;
+        // }
+        // if (Core::InputHandler::isEvent(PLAYER_MOVE_LEFT)) {
+        //     vel.x -= speed;
+        // }
+        // if (Core::InputHandler::isEvent(PLAYER_MOVE_RIGHT)) {
+        //     vel.x += speed;
+        // }
+        // if (vel.x == 0 && vel.y == 0) return;
+
+        // getTransform().pos = getTransform().pos + (speed * delta) * vel.normalize();
+        // getTransform().pos.print();
+    }
+
+
+    void drawGfx() {
+        sprite.DrawFrame(0,getTransform());
     }
 };
 
@@ -98,6 +160,7 @@ public:
         setCamera(cam);
         Core::SpriteManager::loadTexture("player1","../res/player.png");
         Core::SpriteManager::loadTexture("player2","../res/enemy_test.png");
+        Core::SpriteManager::loadTexture("Tree","../res/48x48 trees.png");
     };
 
     void loadResources(){
@@ -141,6 +204,10 @@ int main(void)
 
     Core::SceneManager::addScene(scene);
 
+    // for(int i = 0;i<=900;i++){
+    //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
+    // }
+   new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player* player  = new Player(scene, vec2(GetRenderWidth()/2.0, GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 
