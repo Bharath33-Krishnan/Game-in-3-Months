@@ -6,17 +6,27 @@
 
 class particle{
 private:
-    SpriteSheet sprite;
+    particle* NextParticle;
+    SpriteSheet* sprite;
     transform t;
-    u32 spriteFrame = 0;
+
+    u32 spriteFrame;
     i32 blendMode;
 
 public:
-    virtual void ParticleBehaviour() = 0;
-    
-    void drawGfx() {
-        BeginBlendMode(blendMode);
-            sprite.DrawFrame(spriteFrame,t);
-        EndBlendMode();
+    f32 rotSpeed;
+    f32 scaleSpeed;
+    vec2 vel;
+
+    inline void initParticle(transform& t,SpriteSheet* sprite,u32 frame){
+        this->sprite = sprite;
+        this->spriteFrame = frame;
+        this->t.pos = t.pos;
+        this->t.rot = t.rot;
+        this->t.scale = t.scale;
     }
+    void update(f32 delta);
+    inline void setNextParticle(particle* next){NextParticle = next;}
+    inline particle* getNextParticle(){return NextParticle;}
+    void draw();
 };
