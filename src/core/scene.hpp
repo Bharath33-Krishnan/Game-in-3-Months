@@ -6,14 +6,21 @@
 
 #define MAX_ENTITIES_PER_SCENE 1000
 #define CHUNK_SIZE 25
+#define MAX_LAYER_POSSIBLE 10
 
 namespace Core {
 
 class Scene {
 private:
     std::vector<Core::AbstractEntity*> entities;
+    std::vector<std::vector<Core::AbstractEntity*>> layerViseEntities;
+    std::vector<i32> entitiesPerLayer;
     i32 entityCounter = 0;
     u32 max_layer;
+
+
+    void drawChunk();
+    void drawNormal();
 
 public:
     bool loading;

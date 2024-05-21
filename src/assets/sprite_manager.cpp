@@ -148,7 +148,7 @@ SpriteSheet SpriteSheet::CreateSpriteSheet(const char* label,vec2 initial_paddin
     return SpriteSheet(label,initial_padding,max_frame,num_row,num_rows,loop);
 }
 
-void SpriteSheet::AnimateFrame(transform& transform){
+void SpriteSheet::AnimateFrame(transform& transform,const Color tint){
     if(tex == nullptr)
         return;
 
@@ -164,12 +164,12 @@ void SpriteSheet::AnimateFrame(transform& transform){
             curr_frame = max_frame - 1;
     }
 
-    DrawFrame(curr_frame , transform);
+    DrawFrame(curr_frame , transform,tint);
 
 }
 
 
-void SpriteSheet::DrawFrame(int frame,transform& transform){
+void SpriteSheet::DrawFrame(int frame,transform& transform,const Color tint){
     if(tex == nullptr)
         return;
     if(frame >= max_frame){
@@ -178,5 +178,5 @@ void SpriteSheet::DrawFrame(int frame,transform& transform){
     Rectangle src = {initial_padding.x + stride.x * frame,initial_padding.y,stride.x,stride.y};
     Rectangle dest = {transform.pos.x, transform.pos.y , stride.x * transform.scale , stride.y * transform.scale};
     // DrawTexturePro(*tex,src, dest, {stride.x * transform.scale/2,stride.y * transform.scale/2}, transform.rot, WHITE);
-    DrawTexturePro(*tex,src, dest, {(stride.x * transform.scale/2) + transform.pivotOffset.x ,(stride.y * transform.scale/2) + transform.pivotOffset.y}, transform.rot, WHITE);
+    DrawTexturePro(*tex,src, dest, {(stride.x * transform.scale/2) + transform.pivotOffset.x ,(stride.y * transform.scale/2) + transform.pivotOffset.y}, transform.rot, tint);
 }

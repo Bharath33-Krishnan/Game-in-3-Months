@@ -1,6 +1,7 @@
 #include "raylib/raylib.h"
 #include "src/core.h"
 #include "src/assets/sprite_manager.hpp"
+#include "src/assets/particle_emitter.hpp"
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -76,6 +77,7 @@ public:
 
         getTransform().pos = getTransform().pos + (speed * delta) * vel.normalize();
     }
+
 
     void drawGfx() {
         // BeginShaderMode(material->getShader());
@@ -158,6 +160,61 @@ public:
     }
 };
 
+
+
+class treeparticle : public ParticleEmitter{
+private:
+    Player* pl;
+public:
+
+    treeparticle(Player* pl,Core::Scene* scene,vec2 pos){
+        this->pl = pl;
+        this->scene = scene;
+        // NOTE : Gowrish - For some reason `this` becomes NULL
+        scene->addEntity(this);
+        this->setLayer(5);
+
+        t.pos = pos;
+        t.rot = 0.0f;
+        t.scale = 3.f;
+        t.pivotOffset = vec2(0.0,50.0);
+        // this->setLayer(2);
+
+        this->init();
+    }
+
+    void init()override{
+
+        particleEmitterData data;
+        data.tex = SpriteSheet::CreateSpriteSheet("particles", vec2(0.0,0.0),9.0, 1.0, 9.0 , true);
+        data.texFrame = 4;
+
+        data.angleRange = vec2(50.,140.);
+        data.emissionVariance = 1;
+        data.emissionRate = 2;
+        data.particle_lifetime = 3;
+        data.startColor = RED; 
+        data.endColor = BLUE;
+        data.blendMode = BLEND_ALPHA_PREMULTIPLY;
+        data.start_endSize  = vec2(.5,.5);
+        data.rotSpeed = 0.0;
+        data.speed = 50.0;
+
+        this->data = data;
+        // this->setLayer(1);
+        this->initParticlePool();
+    }
+    void update(f32 delta) override{
+        ParticleEmitter::update(delta);
+        getTransform().pos = pl->getTransform().pos; 
+    
+    }
+
+
+};
+
+
+
 class MyScene : public Core::Scene {
 private:
     float time = 0;
@@ -175,6 +232,7 @@ public:
         // Core::SpriteManager::loadTexture("player2", "../res/spaceman_running_forward.png");
         Core::SpriteManager::loadTexture("player_running_anim", "../res/spaceman_running.png");
         Core::SpriteManager::loadTexture("Tree","../res/48x48 trees.png");
+        Core::SpriteManager::loadTexture("particles","../res/particles.png");
     };
 
     void loadResources() {
@@ -220,6 +278,7 @@ int main(void) {
     // }
     new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
+    new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 
     Core::SceneManager::run();

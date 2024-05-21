@@ -10,6 +10,13 @@ Core::Scene::Scene() {
     entities = std::vector<Core::AbstractEntity*>(MAX_ENTITIES_PER_SCENE);
     loadThread = std::thread(&Core::Scene::loadResources,this);
     loading = true;
+
+    max_layer = 0;
+    entitiesPerLayer = std::vector<i32>(MAX_LAYER_POSSIBLE+1);
+    for(i32 i = 0; i <= MAX_LAYER_POSSIBLE; i++){
+        layerViseEntities.push_back(std::vector<Core::AbstractEntity*>(MAX_ENTITIES_PER_SCENE));
+        entitiesPerLayer[i] = 0;
+    }
 }
 
 void Core::Scene::addEntity(Core::AbstractEntity* entity) {
@@ -20,7 +27,11 @@ void Core::Scene::addEntity(Core::AbstractEntity* entity) {
         return;
     }
     max_layer = std::max(max_layer,entity->getLayer());
+    if(max_layer > MAX_LAYER_POSSIBLE)
+        max_layer = MAX_LAYER_POSSIBLE;
+
     entities[entityCounter++] = entity;
+
 }
 
 Core::Scene::~Scene() {
@@ -47,20 +58,24 @@ void Core::Scene::update(f32 delta) {
         // NOTE : Gowrish - Checking for NULLs since array is pre initialized
         if (entity){
             entity->update(delta);
+
             max_layer = std::max(max_layer,entity->getLayer());
+            if(max_layer > MAX_LAYER_POSSIBLE)
+                max_layer = MAX_LAYER_POSSIBLE;
         }
+    }
+    for(i32 i = 0; i <= MAX_LAYER_POSSIBLE; i++){
+        entitiesPerLayer[i] = 0;
     }
 }
 
 
-void drawNormal(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer);
-void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer);
 
 void Core::Scene::draw() {
-    drawChunk(camera,entities,max_layer);
+    drawChunk();
 }
 
-void drawNormal(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer){
+void Core::Scene::drawNormal(){
     for(u32 layer = 0; layer <= max_layer; layer++){
         for (Core::AbstractEntity* entity : entities) {
             // NOTE : Gowrish - Checking for NULLs since array is pre initialized
@@ -77,12 +92,10 @@ bool isInsideChunk(vec2 Chunk,vec2 entityPos){
     return (entityPos.x < Chunk.x && entityPos.x >= Chunk.x - CHUNK_SIZE)  && (entityPos.y < Chunk.y && entityPos.y >= Chunk.y - CHUNK_SIZE);
 }
 
-void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u32 max_layer){
+void Core::Scene::drawChunk(){
     
-    vec2 screenEdgeX = vec2(mainCam.target.x - GetRenderWidth()/2. , mainCam.target.x + GetRenderWidth()/2.);
-    vec2 screenEdgeY = vec2(mainCam.target.y - GetRenderHeight()/2. , mainCam.target.y + GetRenderHeight()/2.);
-
-    for(u32 layer = 0; layer <= max_layer; layer++){
+    vec2 screenEdgeX = vec2(camera.target.x - GetRenderWidth()/2. , camera.target.x + GetRenderWidth()/2.);
+    vec2 screenEdgeY = vec2(camera.target.y - GetRenderHeight()/2. , camera.target.y + GetRenderHeight()/2.);
 
         for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 + CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
             for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
@@ -93,11 +106,17 @@ void drawChunk(Camera2D& mainCam,std::vector<Core::AbstractEntity*>& entities,u3
                     if(!isInsideChunk(vec2(XChunk,YChunk), entity->getTransform().pos))
                         continue;
                     // TraceLog(LOG_INFO, "%d %d",XChunk,YChunk); 
-                    entity->draw(layer);
+                    layerViseEntities[entity->getLayer()][entitiesPerLayer[entity->getLayer()]++] = entity;
+                    // entitiesPerLayer[entity->getLayer()]++;
+                    // entity->draw(layer);
                 }
             }
-
         }    
+
+    for(u32 layer = 0; layer <= max_layer; layer++){
+        for(i32 i = 0 ; i < entitiesPerLayer[layer];i++){
+            layerViseEntities[layer][i]->draw(layer);
+        }
     }
     
     // TraceLog(LOG_INFO,"%f %f", mainCam.target.x, mainCam.target.y);

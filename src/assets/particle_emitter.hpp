@@ -1,28 +1,28 @@
-#pragma once
-#include "data_types.hpp"
+#include "particle_data.hpp"
+#include "../core/scene.hpp"
 #include "particle.hpp"
 
 
-struct particleEmitterData{
-    vec2 angleRange;
-    vec2 start_endSize;
-    
-    f32 emissionRate;
-    f32 emissionVariance;
-    f32 particle_lifetime;
-    f32 speed;
-    f32 rotSpeed;
-};
 
-class ParticleEmitter{
+class ParticleEmitter:public Core::AbstractEntity{
 private:
-    particleEmitterData data;
+    particle* nextAvailableParticle;
     particle* particlePool;
     i32 particlePoolSize;
+    i32 frames_since_last_gen;
+
+    bool generate = true;
+
+protected:
+    Core::Scene* scene;
+    particleEmitterData data;
 
 public:
-    ParticleEmitter(particleEmitterData data);
+    void initParticlePool();// Call After init function 
+    void update(f32 delta)override;
+    void draw(u32 layer)override;
     void updateData(particleEmitterData data){this->data = data;};
+    void genParticle();
     inline particleEmitterData getData(){return data;};
     ~ParticleEmitter();
 };
