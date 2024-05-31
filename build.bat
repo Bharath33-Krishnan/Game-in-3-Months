@@ -1,6 +1,6 @@
 if not exist build mkdir build
 
-cmake . -D make -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+cmake . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 
 mklink compile_commands.json build\compile_commands.json
 
