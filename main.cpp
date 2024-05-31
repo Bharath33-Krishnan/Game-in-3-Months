@@ -199,7 +199,7 @@ int main(void) {
     InitWindow(1280, 720, "Test");
 
     Camera2D cam;
-    cam.offset = (Vector2){ GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
+    cam.offset = { GetScreenWidth()/2.0f, GetScreenHeight()/2.0f };
     cam.rotation = 0.0f;
     cam.zoom = 1.0f;
 

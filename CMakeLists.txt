@@ -22,7 +22,15 @@ foreach(subdir IN ITEMS assets utilities core) #Append extra subdirs to the end 
 endforeach()
 
 add_library(raylib STATIC IMPORTED)
-set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
+
+if (WIN32)
+    set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylibdll.a)
+endif()
+
+if (UNIX)
+    set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
+endif()
+
 target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE raylib)
 
 
