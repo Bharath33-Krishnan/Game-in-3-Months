@@ -1,22 +1,25 @@
 #pragma once
-#include "../core/drawable.hpp"
-#include "raylib/raylib.h"
 #include "sprite_manager.hpp"
+#include "particle_data.hpp"
 
 
 class particle{
 private:
-    SpriteSheet sprite;
+    particle* NextParticle;
     transform t;
-    u32 spriteFrame = 0;
-    i32 blendMode;
+    vec2 vel;
+    particleEmitterData* data;
+    
+    i32 framesAlive; 
+    f32 lifeTime;
+    bool alive = false;
+    
 
 public:
-    virtual void ParticleBehaviour() = 0;
-    
-    void drawGfx() {
-        BeginBlendMode(blendMode);
-            sprite.DrawFrame(spriteFrame,t);
-        EndBlendMode();
-    }
+    void initParticle(vec2 pos,vec2 vel,particleEmitterData* data);
+    void update(f32 delta);
+    inline void setNextParticle(particle* next){NextParticle = next;}
+    inline particle* getNextParticle(){return NextParticle;}
+    bool isAlive();
+    void draw();
 };

@@ -44,12 +44,12 @@ private:
 public:
     SpriteSheet();
     static SpriteSheet CreateSpriteSheet(const char* label,vec2 initial_padding,int max_frame,int num_row,int num_rows,bool loop = false);
-    void AnimateFrame(transform& transform);
+    void AnimateFrame(transform& transform,const Color tint = WHITE);
     inline void ChangeFPS(int fps){
         frame_speed = fps;
     }
     inline int getFPS(){
         return frame_speed;
     }
-    void DrawFrame(int frame,transform& transform);
+    void DrawFrame(int frame,transform& transform,const Color tint = WHITE);
 };
