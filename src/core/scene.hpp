@@ -6,6 +6,7 @@
 
 #define MAX_ENTITIES_PER_SCENE 1000
 #define CHUNK_SIZE 25
+#define EXTRA_CHUNKS 5 
 #define MAX_LAYER_POSSIBLE 10
 
 namespace Core {

@@ -97,8 +97,8 @@ void Core::Scene::drawChunk(){
     vec2 screenEdgeX = vec2(camera.target.x - GetRenderWidth()/2. , camera.target.x + GetRenderWidth()/2.);
     vec2 screenEdgeY = vec2(camera.target.y - GetRenderHeight()/2. , camera.target.y + GetRenderHeight()/2.);
 
-        for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 + CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
-            for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
+        for(int YChunk = (int)screenEdgeY.x;YChunk <= ((int)screenEdgeY.y + 1 +  EXTRA_CHUNKS * CHUNK_SIZE) ; YChunk += CHUNK_SIZE){
+            for(int XChunk = (int)screenEdgeX.x;XChunk <= ((int)screenEdgeX.y + 1 + EXTRA_CHUNKS * CHUNK_SIZE) ; XChunk += CHUNK_SIZE){
                 for (Core::AbstractEntity* entity : entities) {
                     // NOTE : Gowrish - Checking for NULLs since array is pre initialized
                     if (!entity)
