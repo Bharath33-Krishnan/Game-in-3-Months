@@ -278,7 +278,7 @@ int main(void) {
     // }
     new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
-    new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));
+    // new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 
     Core::SceneManager::run();
