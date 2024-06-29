@@ -135,7 +135,8 @@ public:
         sprite = SpriteSheet::CreateSpriteSheet("Tree", vec2(0.0,0.0),4.0, 0.0, 1.0 , true);
         sprite.ChangeFPS(sprite.getFPS()*4);
 
-        my_Collider = new Core::BoxCollider2D(t,vec2(50,50));
+        my_Collider = new Core::BoxCollider2D(t,vec2(100,100));
+        my_Collider->isStationary = true;
         // UnloadImage(img);
     }
 

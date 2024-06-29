@@ -4,7 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 # file(GLOB src "*.cpp")
-file(GLOB src "./collissionTestBed.cpp")
+# file(GLOB src "./collissionTestBed.cpp")
+file(GLOB src "./main.cpp")
 
 project(GIN3 VERSION 0.01)
 configure_file(version.h.in version.h)

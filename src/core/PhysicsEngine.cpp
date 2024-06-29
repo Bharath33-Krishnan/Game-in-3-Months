@@ -81,20 +81,20 @@ void Core::PhysicsEngine::GenerateSpatialGrid(){
     }
 }
 
-void Core::PhysicsEngine::SolveCollissionsForCell(int x, int y){
+void Core::PhysicsEngine::SolveCollissionsForCell(int x, int y,float phy_delta){
     for(int i = 0; i < num_colliders_per_cell[x][y]; i++){
         Collider* curr_col = colliders[colliders_per_cell[x][y][i]];
         for(int j = i+1; j < num_colliders_per_cell[x][y]; j++){
             Collider* other_col = colliders[colliders_per_cell[x][y][j]];
-            curr_col->SolveCollision(other_col);
+            curr_col->SolveCollision(other_col,phy_delta);
         }
     }
 }
 
-void Core::PhysicsEngine::SolveCollissions(){
+void Core::PhysicsEngine::SolveCollissions(float phy_delta){
     for(int x = 0; x < cellsX ; x++){
         for(int y = 0; y < cellsY ; y++){
-            SolveCollissionsForCell(x,y);
+            SolveCollissionsForCell(x,y,phy_delta);
         }
     }
 }

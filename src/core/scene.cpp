@@ -45,8 +45,10 @@ void Core::Scene::update(f32 delta) {
     DrawFPS(0, 0);
     // NOTE: Bharath: Physics Update Code Gonna Go Here
     
-    PhysicsEngine::GenerateSpatialGrid();
-    PhysicsEngine::SolveCollissions();
+    for(int i = 0 ; i < PHYSICS_CLOCK_PER_FRAME;i++){
+        PhysicsEngine::GenerateSpatialGrid();
+        PhysicsEngine::SolveCollissions(delta/PHYSICS_CLOCK_PER_FRAME);
+    }
 
     // NOTE: Bharath: End of Physics Update
 

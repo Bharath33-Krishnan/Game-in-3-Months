@@ -3,6 +3,7 @@
 #include <vector>
 #include "collision/Collider.hpp"
 
+#define PHYSICS_CLOCK_PER_FRAME 8
 #define MAX_COLLIDERS 1000
 #define MAX_COLLIDERS_PER_CELL 10
 
@@ -30,7 +31,7 @@ private:
     static std::vector<std::vector<std::vector<int>>> colliders_per_cell;
     static std::vector<std::vector<int>> num_colliders_per_cell;
 
-    static void SolveCollissionsForCell(int x,int y);
+    static void SolveCollissionsForCell(int x,int y,float phy_delta);
 public:
     //************ Public Property ************
     static bool is_initialized;
@@ -41,7 +42,7 @@ public:
     static void RegisterCam(Camera2D* scene_cam);
     static void registerCollider(Collider* col);
     static void GenerateSpatialGrid();
-    static void SolveCollissions();
+    static void SolveCollissions(float phy_delta);
     static inline vec2 GetColIndicesFloor(vec2 col_pos){
         return  vec2(floor(col_pos.x/GRID_CELL_SIZE),
                      floor(col_pos.y/GRID_CELL_SIZE));

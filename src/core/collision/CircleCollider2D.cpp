@@ -1,6 +1,6 @@
 #include "Core_Colliders.hpp"
 
-bool Core::CircleCollider2D::SolveCollision(Collider* other){
+bool Core::CircleCollider2D::SolveCollision(Collider* other,float phy_delta){
     bool return_value = false;
 
 
