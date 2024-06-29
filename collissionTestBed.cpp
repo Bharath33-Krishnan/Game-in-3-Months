@@ -2,6 +2,7 @@
 #include "src/core.h"
 #include "src/assets/sprite_manager.hpp"
 #include "src/assets/particle_emitter.hpp"
+#include "src/core/PhysicsEngine.hpp"
 #include "src/core/collision/BoxCollider2D.hpp"
 #include "src/core/scene.hpp"
 
@@ -19,6 +20,7 @@ enum DrawModes{
 
 class Circle: public Core::Drawable {
 private:
+    float rad;
 
     Core::Collider* my_Collider;
 public:
@@ -26,14 +28,15 @@ public:
         scene->addEntity(this);
         t.pos = center;
         t.rot = 0;
-        t.scale = (point - center).magnitude();
+        t.scale = 1;
+        rad = (point - center).magnitude();
 
 
         this->init();
     }
 
     void init() {
-        my_Collider = new Core::CircleCollider2D(t,t.scale);
+        my_Collider = new Core::CircleCollider2D(t,rad);
     }
 
     void update(f32 delta){
@@ -172,6 +175,7 @@ public:
     }
 
     void drawGfx(){
+        Core::PhysicsEngine::drawGrid();
         drawUI();
 
         if(!mouse_clicked)
@@ -246,6 +250,7 @@ int main(void) {
 
 
     MyScene *scene = new MyScene(cam);
+    Core::PhysicsEngine::Init();
     Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
 
     Core::InputHandler::registerEvent(MOUSE_CLICK_LEFT, LITERAL_TO_STRING(MOUSE_CLICK_LEFT), 

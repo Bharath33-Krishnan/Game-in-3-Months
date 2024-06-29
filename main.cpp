@@ -27,6 +27,7 @@ private:
     std::vector<SpriteSheet> running_anims;
     PlayerEvents running_state;
 
+    Core::Collider* my_Collider;
 public:
     Player(Core::Scene *scene, vec2 pos) {
         this->scene = scene;
@@ -44,6 +45,7 @@ public:
     void init() {
         tex = *Core::SpriteManager::getTexture("player1");
 
+        my_Collider = new Core::BoxCollider2D(t,vec2(100,100));
         // sprite = SpriteSheet::CreateSpriteSheet("player2", vec2(0.0, 0.0), 16., 0., 1., true);
         // sprite.ChangeFPS(30);
         running_anims = std::vector<SpriteSheet>(4);
@@ -87,6 +89,7 @@ public:
 
         running_anims[running_state].AnimateFrame(getTransform());
 
+        my_Collider->drawCollider();
         // EndShaderMode();
     }
 
@@ -108,6 +111,7 @@ private:
 
     SpriteSheet sprite;
 
+    Core::Collider* my_Collider;
 public:
     Tree(Core::Scene* scene, vec2 pos) {
         this->scene = scene;
@@ -130,6 +134,8 @@ public:
         // Image img = LoadImage("../res/player.png");
         sprite = SpriteSheet::CreateSpriteSheet("Tree", vec2(0.0,0.0),4.0, 0.0, 1.0 , true);
         sprite.ChangeFPS(sprite.getFPS()*4);
+
+        my_Collider = new Core::BoxCollider2D(t,vec2(50,50));
         // UnloadImage(img);
     }
 
@@ -157,6 +163,8 @@ public:
 
     void drawGfx() {
         sprite.DrawFrame(0,getTransform());
+        my_Collider->drawCollider();
+        Core::PhysicsEngine::drawGrid();
     }
 };
 
@@ -271,13 +279,13 @@ int main(void) {
     Core::InputHandler::registerEvent(PLAYER_ATTACK,      LITERAL_TO_STRING(PLAYER_ATTACK),         {MOUSE_BUTTON_LEFT},  {});
 
     MyScene *scene = new MyScene(cam);
-
+    Core::PhysicsEngine::Init();
     Core::SceneManager::addScene(scene);
     // for(int i = 0;i<=900;i++){
     //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
     // }
     new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
-    Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
+    Player *player = new Player(scene, vec2(GetRenderWidth() / 4.0, GetRenderHeight() / 4.0));
     // new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 
