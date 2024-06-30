@@ -56,7 +56,7 @@ public:
     virtual void drawCollider() = 0;
 
     //********* Distructor ***********
-    virtual ~Collider(){};
+    virtual ~Collider();
 };
 
 }; // namespace Core

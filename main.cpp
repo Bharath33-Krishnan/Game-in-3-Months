@@ -76,7 +76,7 @@ public:
         }
         if (vel.x == 0 && vel.y == 0)
             return;
-
+        
         getTransform().pos = getTransform().pos + (speed * delta) * vel.normalize();
     }
 
@@ -136,7 +136,7 @@ public:
         sprite.ChangeFPS(sprite.getFPS()*4);
 
         my_Collider = new Core::BoxCollider2D(t,vec2(100,100));
-        my_Collider->isStationary = true;
+        // my_Collider->isStationary = true;
         // UnloadImage(img);
     }
 
@@ -282,9 +282,9 @@ int main(void) {
     MyScene *scene = new MyScene(cam);
     Core::PhysicsEngine::Init();
     Core::SceneManager::addScene(scene);
-    // for(int i = 0;i<=900;i++){
-    //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
-    // }
+    for(int i = 0;i<=8;i++){
+       new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
+    }
     new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     Player *player = new Player(scene, vec2(GetRenderWidth() / 4.0, GetRenderHeight() / 4.0));
     // new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));

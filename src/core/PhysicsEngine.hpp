@@ -53,7 +53,7 @@ public:
     }
 
     //************ Getters ************
-    static std::vector<Collider*> getColliders();
+    static std::vector<Collider*>& getColliders();
 
     //************ GIZMO functions ************
     static void drawGrid();

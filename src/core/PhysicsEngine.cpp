@@ -50,7 +50,7 @@ void Core::PhysicsEngine::GenerateSpatialGrid(){
     for(int col_id = 0; col_id < num_colliders ; col_id++){
         Collider* collider = colliders[col_id];
         if(collider == nullptr)
-            break;// NOTE: Bharath: Should it be break or continue idk
+            continue;
         vec2 col_pos = collider->getParameter(ColParams::POS);
         vec2 col_size = collider->getParameter(ColParams::SCALE);
         vec2 neg_col_size = vec2(-col_size.x,-col_size.y);
@@ -99,7 +99,7 @@ void Core::PhysicsEngine::SolveCollissions(float phy_delta){
     }
 }
 
-std::vector<Core::Collider*> Core::PhysicsEngine::getColliders(){
+std::vector<Core::Collider*>& Core::PhysicsEngine::getColliders(){
     return colliders;
 }
 

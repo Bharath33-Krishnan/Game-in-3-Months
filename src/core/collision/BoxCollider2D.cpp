@@ -4,7 +4,6 @@
 
 bool Core::BoxCollider2D::SolveWithBoxCollider(Core::BoxCollider2D* other,i32 id,f32 phy_delta){
     vec2 pos = getParameter(ColParams::POS);
-    vec2 pos = getParameter(ColParams::POS);
     Rectangle my_rec = {base_t.pos.x,base_t.pos.y,diagonal.x,diagonal.y};
     Rectangle other_rec = {other->base_t.pos.x,other->base_t.pos.y,other->diagonal.x,other->diagonal.y};
 
