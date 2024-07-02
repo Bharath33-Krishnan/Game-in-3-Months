@@ -16,6 +16,9 @@
 *.mod
 *.smod
 
+# Visual Studio files
+.vs/
+CMakeSettings.json
 
 # Executables
 *.exe
