@@ -1,6 +1,6 @@
 #pragma once
-#include "data_types.hpp"
-#include "../core/entity.hpp"
+#include "../../utilities/data_types.hpp"
+#include "../../core/entity.hpp"
 #include "raylib/raylib.h"
 #include <vector>
 

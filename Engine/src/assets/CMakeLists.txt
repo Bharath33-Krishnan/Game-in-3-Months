@@ -7,7 +7,7 @@ file(
 
 
 target_sources(
-    ${CMAKE_PROJECT_NAME} 
+    ${ENGINE_NAME} 
     PRIVATE 
     ${source_files}
 )

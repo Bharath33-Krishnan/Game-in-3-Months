@@ -1,7 +1,4 @@
-#include "raylib/raylib.h"
-#include "src/core.h"
-#include "src/assets/sprite_manager.hpp"
-#include "src/assets/particle_emitter.hpp"
+#include "Engine/Engine.h"
 
 #define LITERAL_TO_STRING(x) #x
 

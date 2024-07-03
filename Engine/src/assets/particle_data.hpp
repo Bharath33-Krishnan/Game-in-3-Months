@@ -1,5 +1,6 @@
 #pragma once
-#include "data_types.hpp"
+
+#include "../utilities/data_types.hpp"
 #include "sprite_manager.hpp"
 
 struct particleEmitterData{

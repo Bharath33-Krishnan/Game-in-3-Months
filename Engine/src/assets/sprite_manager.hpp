@@ -2,7 +2,7 @@
 
 #include "raylib/raylib.h"
 #include <cstdint>
-#include <data_types.hpp>
+#include "../utilities/data_types.hpp"
 #include <unordered_map>
 #include "../core/entity.hpp"
 

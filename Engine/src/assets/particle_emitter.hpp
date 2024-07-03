@@ -1,6 +1,6 @@
 #pragma once
 
-#include "particle_data.hpp"
+#include "../utilities/data_types.hpp"
 #include "../core/scene.hpp"
 #include "particle.hpp"
 

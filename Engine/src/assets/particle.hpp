@@ -1,6 +1,7 @@
 #pragma once
-#include "sprite_manager.hpp"
+
 #include "particle_data.hpp"
+#include "../utilities/data_types.hpp"
 
 
 class particle{
