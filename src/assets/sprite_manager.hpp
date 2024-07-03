@@ -1,4 +1,5 @@
 #pragma once
+
 #include "raylib/raylib.h"
 #include <cstdint>
 #include <data_types.hpp>

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "particle_data.hpp"
 #include "../core/scene.hpp"
 #include "particle.hpp"
