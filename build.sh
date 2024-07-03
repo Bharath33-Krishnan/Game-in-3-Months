@@ -8,4 +8,4 @@ ln -s build/compile_commands.json ./compile_commands.json
 
 cd build
 make
-./GIN3.out
+./GIN3

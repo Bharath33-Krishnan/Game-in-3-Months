@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.29)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -12,25 +12,15 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/src/utilities)
 
 
-add_executable(${CMAKE_PROJECT_NAME}.out ${src})
+add_executable(${CMAKE_PROJECT_NAME} ${src})
 
-#Adding our subdir => light_lib is made
 foreach(subdir IN ITEMS assets utilities core) #Append extra subdirs to the end of the list for src
     add_subdirectory(${CMAKE_SOURCE_DIR}/src/${subdir})
-    target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE ${subdir}_lib)
-    add_dependencies(${CMAKE_PROJECT_NAME}.out ${subdir}_lib)
 endforeach()
 
-add_library(raylib STATIC IMPORTED)
-
-if (WIN32)
-    set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylibdll.a)
-endif()
-
-if (UNIX)
-    set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
-endif()
-
-target_link_libraries(${CMAKE_PROJECT_NAME}.out PRIVATE raylib)
-
-
+target_link_libraries(
+    ${CMAKE_PROJECT_NAME} 
+    PRIVATE 
+    raylib 
+    -L${CMAKE_SOURCE_DIR}/lib/raylib/
+)

@@ -1,11 +1,13 @@
-file(GLOB src "*.cpp")
-
-add_library(assets_lib ${src})
-
-# If your subdir has dependencies specify them here as well 
-add_library(raylib STATIC IMPORTED)
-set_target_properties(raylib PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/lib/raylib/libraylib.a)
-target_link_libraries(assets_lib PRIVATE raylib)
+file(
+    GLOB
+    source_files
+    CONFIGURE_DEPENDS
+    "*.cpp"
+)
 
 
-# file(GLOB_RECURSE ADDITIONAL_SOURCES "*.cpp")
+target_sources(
+    ${CMAKE_PROJECT_NAME} 
+    PRIVATE 
+    ${source_files}
+)
