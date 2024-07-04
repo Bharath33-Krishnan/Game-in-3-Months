@@ -39,6 +39,8 @@ void Core::PhysicsEngine::RegisterCam(Camera2D *scene_cam){
 }
 
 void Core::PhysicsEngine::GenerateSpatialGrid(){
+    if(!is_initialized)
+        return;
     for(i32 x = 0; x < cellsX ; x++){
         for(i32 y = 0; y < cellsY ; y++){
             num_colliders_per_cell[x][y] = 0;
@@ -99,12 +101,16 @@ void Core::PhysicsEngine::SolveCollissionsForCell(i32 x, i32 y,f32 phy_delta){
 }
 
 bool Core::PhysicsEngine::GetCachedCollissionData(Collider* A,Collider* B){
+    if(!is_initialized)
+        return false;
     int id_A = A->getId(); 
     int id_B = B->getId(); 
     return collission_data[id_A][(int)(id_B/64)] & (1<<(id_B%64));
 }
 
 void Core::PhysicsEngine::SolveCollissions(f32 phy_delta){
+    if(!is_initialized)
+        return;
     for(i32 x = 0; x < cellsX ; x++){
         for(i32 y = 0; y < cellsY ; y++){
             SolveCollissionsForCell(x,y,phy_delta);
