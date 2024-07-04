@@ -2,6 +2,7 @@
 #include "Engine/src/core/PhysicsEngine.hpp"
 #include "Engine/src/core/collider/BoxCollider2D.hpp"
 #include "Engine/src/core/collider/Collider.hpp"
+#include "raylib/raylib.h"
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -49,7 +50,8 @@ public:
         // sprite = SpriteSheet::CreateSpriteSheet("player2", vec2(0.0, 0.0), 16., 0., 1., true);
         // sprite.ChangeFPS(30);
         running_anims = std::vector<SpriteSheet>(4);
-        collider = new Core::BoxCollider2D(t,vec2(50,50));
+        collider = new Core::BoxCollider2D(t,vec2(100,100));
+        collider->isTrigger = true;
         for (int i = 0; i < 4; i++) {
             running_anims[i] = SpriteSheet::CreateSpriteSheet("player_running_anim", vec2(0, 0), 16, i, 4, true);
             running_anims[i].ChangeFPS(30);
@@ -137,7 +139,7 @@ public:
         // Image img = LoadImage("../res/player.png");
         sprite = SpriteSheet::CreateSpriteSheet("Tree", vec2(0.0,0.0),4.0, 0.0, 1.0 , true);
         sprite.ChangeFPS(sprite.getFPS()*4);
-        collider = new Core::BoxCollider2D(t,vec2(50,50));
+        collider = new Core::BoxCollider2D(t,vec2(100,100));
         // UnloadImage(img);
     }
 
@@ -230,6 +232,7 @@ private:
 
 public:
     Player *mainPlayer;
+    Tree* myTree;
 
     MyScene(Camera2D &cam) {
         // DisableCursor();
@@ -242,6 +245,8 @@ public:
         Core::SpriteManager::loadTexture("player_running_anim", "../res/spaceman_running.png");
         Core::SpriteManager::loadTexture("Tree","../res/48x48 trees.png");
         Core::SpriteManager::loadTexture("particles","../res/particles.png");
+
+        myTree = new Tree(this,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
     };
 
     void loadResources() {
@@ -259,6 +264,9 @@ public:
     void update(f32 delta) {
         camera.target = mainPlayer->getTransform().pos.to_vec();
         Scene::update(delta);
+        if(myTree->collider->onCollisionEnter(mainPlayer->collider)){
+            TraceLog(LOG_INFO, "Collission has entered the engine");
+        }
     }
 };
 
@@ -286,8 +294,7 @@ int main(void) {
     // for(int i = 0;i<=900;i++){
     //    new Tree(scene,vec2(GetRenderWidth()*i/90.,GetRenderHeight()/2.0)); 
     // }
-    new Tree(scene,vec2(GetRenderWidth()/2.0,GetRenderHeight()/2.0)); 
-    Player *player = new Player(scene, vec2(GetRenderWidth() / 2.0, GetRenderHeight() / 2.0));
+    Player *player = new Player(scene, vec2(GetRenderWidth() / 4.0, GetRenderHeight() / 4.0));
     new treeparticle(player,scene,vec2(GetRenderWidth()/3.0,GetRenderHeight()/2.0));
     scene->setMainPlayer(player);
 

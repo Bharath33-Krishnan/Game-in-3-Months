@@ -1,4 +1,5 @@
 #include "scene.hpp"
+#include "PhysicsEngine.hpp"
 #include "input.hpp"
 #include "raylib/raylib.h"
 #include <algorithm>
@@ -42,6 +43,15 @@ Core::Scene::~Scene() {
 
 void Core::Scene::update(f32 delta) {
     DrawFPS(0, 0);
+
+    // NOTE: Bharath: Physics Update Code Gonna Go Here
+
+    for(int i = 0 ; i < PHYSICS_CLOCK_PER_FRAME;i++){
+        PhysicsEngine::GenerateSpatialGrid();
+        PhysicsEngine::SolveCollissions(delta/PHYSICS_CLOCK_PER_FRAME);
+    }
+
+    // NOTE: Bharath: End of Physics Update
 
     // UpdateCamera(&camera, CAMERA_FIRST_PERSON);
     std::unordered_map<u8, std::vector<u16>>::iterator it;
