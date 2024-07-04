@@ -11,6 +11,8 @@ project(GIN3 VERSION 0.01)
 
 file(GLOB source_files main.cpp)
 
+include_directories(${CMAKE_SOURCE_DIR}/${ENGINE_NAME}/include)
+
 add_executable(
     ${CMAKE_PROJECT_NAME}
     ${source_files}

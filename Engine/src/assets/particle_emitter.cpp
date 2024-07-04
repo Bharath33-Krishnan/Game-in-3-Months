@@ -1,12 +1,13 @@
 #include "particle_emitter.hpp"
 #include "raylib/raylib.h"
+#include <climits>
 #include <cmath>
 #include <cstdlib>
 
 
 
 float getRandomRange(float RangeX,float RangeY){
-    std::srand(GetTime());
+    std::srand((u32)(12345623 * sin(GetTime()*10))%INT_MAX);
     return RangeX + (float)rand()* (RangeY - RangeX) / RAND_MAX;
 }
 
