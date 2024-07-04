@@ -2,7 +2,7 @@
 #include "../PhysicsEngine.hpp"
 #include "../entity.hpp"
 #include "Collider.hpp"
-#include "data_types.hpp"
+#include "../../utilities/data_types.hpp"
 #include "raylib/raylib.h"
 
 namespace Core {

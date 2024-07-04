@@ -3,6 +3,7 @@ file(
     source_files
     CONFIGURE_DEPENDS
     "*.cpp"
+    "collider/*.cpp"
 )
 
 target_sources(

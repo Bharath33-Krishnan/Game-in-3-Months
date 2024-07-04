@@ -1,7 +1,6 @@
 #pragma once
-#include <cmath>
 #include <vector>
-#include "collision/Collider.hpp"
+#include "collider/Collider.hpp"
 
 #define PHYSICS_CLOCK_PER_FRAME 8
 #define MAX_COLLIDERS 10000

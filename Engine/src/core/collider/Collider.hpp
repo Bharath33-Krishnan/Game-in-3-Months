@@ -1,5 +1,6 @@
 #pragma once
-#include "data_types.hpp"
+#include "../../utilities/data_types.hpp"
+
 
 namespace Core {
 
@@ -9,7 +10,7 @@ enum class ColParams { POS, ROT, SCALE };
 class Collider {
 private:
     i32 Col_Id = -1;
-
+    
 protected:
     bool Collided = false;
     vec2 Offset = vec2(0,0);

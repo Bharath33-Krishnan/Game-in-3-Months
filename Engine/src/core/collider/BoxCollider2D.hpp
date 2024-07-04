@@ -1,7 +1,7 @@
 #pragma once
 #include "Collider.hpp"
 #include "CircleCollider2D.hpp"
-#include "data_types.hpp"
+#include "../../utilities/data_types.hpp"
 #include "raylib/raylib.h"
 #include "../entity.hpp"
 #include "../PhysicsEngine.hpp"

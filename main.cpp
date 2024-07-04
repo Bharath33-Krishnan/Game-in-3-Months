@@ -1,4 +1,7 @@
 #include "Engine/Engine.h"
+#include "Engine/src/core/PhysicsEngine.hpp"
+#include "Engine/src/core/collider/BoxCollider2D.hpp"
+#include "Engine/src/core/collider/Collider.hpp"
 
 #define LITERAL_TO_STRING(x) #x
 
@@ -25,6 +28,8 @@ private:
     PlayerEvents running_state;
 
 public:
+    Core::Collider* collider;
+
     Player(Core::Scene *scene, vec2 pos) {
         this->scene = scene;
         // NOTE : Gowrish - For some reason `this` becomes NULL
@@ -44,6 +49,7 @@ public:
         // sprite = SpriteSheet::CreateSpriteSheet("player2", vec2(0.0, 0.0), 16., 0., 1., true);
         // sprite.ChangeFPS(30);
         running_anims = std::vector<SpriteSheet>(4);
+        collider = new Core::BoxCollider2D(t,vec2(50,50));
         for (int i = 0; i < 4; i++) {
             running_anims[i] = SpriteSheet::CreateSpriteSheet("player_running_anim", vec2(0, 0), 16, i, 4, true);
             running_anims[i].ChangeFPS(30);
@@ -83,6 +89,8 @@ public:
         // sprite.AnimateFrame(getTransform());
 
         running_anims[running_state].AnimateFrame(getTransform());
+        collider->drawCollider();
+        Core::PhysicsEngine::drawGrid();
 
         // EndShaderMode();
     }
@@ -106,6 +114,8 @@ private:
     SpriteSheet sprite;
 
 public:
+    Core::Collider* collider;
+
     Tree(Core::Scene* scene, vec2 pos) {
         this->scene = scene;
         // NOTE : Gowrish - For some reason `this` becomes NULL
@@ -127,6 +137,7 @@ public:
         // Image img = LoadImage("../res/player.png");
         sprite = SpriteSheet::CreateSpriteSheet("Tree", vec2(0.0,0.0),4.0, 0.0, 1.0 , true);
         sprite.ChangeFPS(sprite.getFPS()*4);
+        collider = new Core::BoxCollider2D(t,vec2(50,50));
         // UnloadImage(img);
     }
 
@@ -154,6 +165,7 @@ public:
 
     void drawGfx() {
         sprite.DrawFrame(0,getTransform());
+        collider->drawCollider();
     }
 };
 
@@ -259,6 +271,7 @@ int main(void) {
     cam.zoom = 1.0f;
 
     DisableCursor();
+    Core::PhysicsEngine::Init();
 
     Core::InputHandler::registerEvent(PLAYER_MOVE_UP,     LITERAL_TO_STRING(PLAYER_MOVE_FORWARD),   {KEY_W},              {});
     Core::InputHandler::registerEvent(PLAYER_MOVE_DOWN,   LITERAL_TO_STRING(PLAYER_MOVE_BACKWARD),  {KEY_S},              {});

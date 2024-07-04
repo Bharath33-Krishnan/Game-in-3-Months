@@ -1,10 +1,4 @@
 #include "PhysicsEngine.hpp"
-#include "collision/Collider.hpp"
-#include "raylib/raylib.h"
-#include <bitset>
-#include <cmath>
-#include <cstring>
-#include <sys/types.h>
 
 std::vector<Core::Collider*> Core::PhysicsEngine::colliders(MAX_COLLIDERS);
 std::vector<std::vector<std::vector<i32>>> Core::PhysicsEngine::colliders_per_cell;
