@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "scene_manager.hpp"
 #include "collider/Collider.hpp"
 
 #define PHYSICS_CLOCK_PER_FRAME 8
@@ -21,7 +22,6 @@ class PhysicsEngine{
 
 private:
     //************ Properties ************
-    static Camera2D* cam;
     static i32 num_colliders;
     static i32 cellsX;
     static i32 cellsY;
@@ -38,7 +38,6 @@ public:
 
     //************ Functions ************
     static void Init();
-    static void RegisterCam(Camera2D* scene_cam);
     static void registerCollider(Collider* col);
     static void GenerateSpatialGrid();
     static void SolveCollissions(f32 phy_delta);

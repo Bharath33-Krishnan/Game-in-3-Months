@@ -1,10 +1,7 @@
 #include "scene.hpp"
 #include "PhysicsEngine.hpp"
 #include "input.hpp"
-#include "raylib/raylib.h"
-#include <algorithm>
 #include <iostream>
-#include <vector>
 
 
 Core::Scene::Scene() {

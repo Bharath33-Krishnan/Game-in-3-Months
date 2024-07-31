@@ -1,4 +1,5 @@
 #include "PhysicsEngine.hpp"
+#include "raylib/raylib.h"
 
 std::vector<Core::Collider*> Core::PhysicsEngine::colliders(MAX_COLLIDERS);
 std::vector<std::vector<std::vector<i32>>> Core::PhysicsEngine::colliders_per_cell;
@@ -8,7 +9,6 @@ i32 Core::PhysicsEngine::num_colliders = 0;
 i32 Core::PhysicsEngine::cellsX = 0;
 i32 Core::PhysicsEngine::cellsY = 0;
 bool Core::PhysicsEngine::is_initialized = false;
-Camera2D* Core::PhysicsEngine::cam;
 
 
 void Core::PhysicsEngine::registerCollider(Collider *col){
@@ -34,10 +34,6 @@ void Core::PhysicsEngine::Init(){
     is_initialized = true;
 }
 
-void Core::PhysicsEngine::RegisterCam(Camera2D *scene_cam){
-    cam = scene_cam;
-}
-
 void Core::PhysicsEngine::GenerateSpatialGrid(){
     if(!is_initialized)
         return;
@@ -50,7 +46,10 @@ void Core::PhysicsEngine::GenerateSpatialGrid(){
         Collider* collider = colliders[col_id];
         if(collider == nullptr)
             continue;
+        vec2 upperLeftCorner_screen(SceneManager::getUpperLeftSceneCorner());
         vec2 col_pos = collider->getParameter(ColParams::POS);
+        col_pos = col_pos - upperLeftCorner_screen;
+        // col_pos.pri32();
         vec2 col_size = collider->getParameter(ColParams::SCALE);
         vec2 neg_col_size = vec2(-col_size.x,-col_size.y);
         vec2 col_rot = collider->getParameter(ColParams::ROT);
@@ -123,16 +122,22 @@ std::vector<Core::Collider*>& Core::PhysicsEngine::getColliders(){
 }
 
 void Core::PhysicsEngine::drawGrid(){
+    vec2 upperLeftCorner_screen(SceneManager::getUpperLeftSceneCorner());
+
     for(i32 gridX = 0; gridX <= cellsX; gridX+=1){
-        DrawLine(gridX*GRID_CELL_SIZE, 0, gridX*GRID_CELL_SIZE, GetScreenHeight(), GREEN);
+        DrawLine(upperLeftCorner_screen.x + gridX*GRID_CELL_SIZE, upperLeftCorner_screen.y,
+                 upperLeftCorner_screen.x + gridX*GRID_CELL_SIZE,upperLeftCorner_screen.y + GetScreenHeight(),
+                 GREEN);
     }
 
     for(i32 gridY = 0; gridY <= cellsY; gridY+=1){
-        DrawLine(0, gridY*GRID_CELL_SIZE, GetScreenWidth(), gridY*GRID_CELL_SIZE, GREEN);
+        DrawLine(upperLeftCorner_screen.x, upperLeftCorner_screen.y + gridY*GRID_CELL_SIZE,
+                 upperLeftCorner_screen.x + GetScreenWidth(), upperLeftCorner_screen.y + gridY*GRID_CELL_SIZE,
+                 GREEN);
     }
 
     for(i32 x = 0; x < cellsX ; x++)
         for(i32 y = 0; y < cellsY ; y++)
             for(i32 i = 0; i < num_colliders_per_cell[x][y]; i++)
-                DrawText(TextFormat("%d",colliders_per_cell[x][y][i]) ,x * GRID_CELL_SIZE + i*10, y * GRID_CELL_SIZE, 10, RED);
+                DrawText(TextFormat("%d",colliders_per_cell[x][y][i]) ,upperLeftCorner_screen.x + x * GRID_CELL_SIZE + i*10, upperLeftCorner_screen.y + y * GRID_CELL_SIZE, 10, RED);
 }

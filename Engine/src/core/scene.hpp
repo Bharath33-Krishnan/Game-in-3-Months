@@ -23,10 +23,12 @@ private:
     void drawChunk();
     void drawNormal();
 
+protected:
+    Camera2D camera;
+
 public:
     bool loading;
     std::thread loadThread;
-    Camera2D camera;
     Scene();
 
     void addEntity(Core::AbstractEntity* entity);
@@ -35,7 +37,9 @@ public:
     virtual void loadResources(){loading = false;};
     inline i32 getEntitiesCount() { return entityCounter; }
     inline Camera2D& getCamera() { return camera; }
-    inline void setCamera(Camera2D cam) { camera = cam; }
+    inline void setCamera(Camera2D cam) { 
+        camera = cam;  
+    }
 
     ~Scene();
 };

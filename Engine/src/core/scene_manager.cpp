@@ -3,7 +3,7 @@
 #include <string>
 
 std::vector<Core::Scene*> Core::SceneManager::scenes;
-Core::Scene* Core::SceneManager::current_scene;
+Core::Scene* Core::SceneManager::current_scene = nullptr;
 
 void Core::SceneManager::cleanUp() {
     for (Core::Scene* scene : scenes) {
@@ -18,6 +18,13 @@ void Core::SceneManager::addScene(Core::Scene* scene) {
 
 Core::Scene* Core::SceneManager::getCurrentScene() {
     return current_scene;
+}
+
+vec2 Core::SceneManager::getUpperLeftSceneCorner(){
+    if(current_scene == nullptr)
+        return  vec2(0);
+    Camera2D& cam = current_scene->getCamera(); 
+    return vec2(cam.target.x - GetScreenWidth()/2. , cam.target.y - GetScreenHeight()/2.);
 }
 
 void Core::SceneManager::run() {
