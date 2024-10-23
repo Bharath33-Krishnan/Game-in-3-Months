@@ -1,25 +1,7 @@
 # Contents
-  1. The Game
-      - [Overview](#GameOverview)
-      - [Features](#GameFeatures)
+- [Overview](#EngineOverview)
+- [Features](#EngineFeatures)
 
-  2. The Engine
-      - [Overview](#EngineOverview)
-      - [Features](#EngineFeatures)
-
-
-# The Game
-<a id = "GameOverview"></a>
-### Overview
-2D souls bourne game made using a custom engine built arround raylibb
-
-<a id = "GameFeatures"></a>
-### Features
-- Dynamic Combat System with multiple weapon types progressed via a skill tree
-- Challenging Boss Fights
-- PvE multiplayer using a peer to peer model
-
-# The Engine
 <a id = "EngineOverview"></a>
 ### Installation and Usage
 - Clone the repo
@@ -31,7 +13,7 @@
   - run build.sh  
 
 ### Overview
-2d game engine built arround raylib to make above mentioned game
+2D game engine built arround raylib. This engine was made to improve raylib's support for game development and also to integrate other third party libraries with raylib easily.
 <a id = "EngineFeatures"></a>
 ### Features
 - Easy to Use
